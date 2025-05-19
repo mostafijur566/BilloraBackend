@@ -55,7 +55,7 @@ BilloraBackend/Api/
 
 ### Prerequisites
 
-- [.NET 8 SDK](https://dotnet.microsoft.com/download)
+- [.NET 9 SDK](https://dotnet.microsoft.com/download)
 - SQL Server or PostgreSQL (based on your configuration)
 - Visual Studio or VS Code
 - Optional: Docker, Postman
@@ -70,7 +70,7 @@ BilloraBackend/Api/
 git clone https://github.com/your-username/billora-backend.git
 cd BilloraBackend/api
 "ConnectionStrings": {
-  "DefaultConnection": "Server=localhost;Database=BilloraDb;User Id=youruser;Password=yourpassword;"
+  "DefaultConnection": "Data Source=DesktopName\\SQLEXPRESS;Initial Catalog=Databasename;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False"
   }
 dotnet ef database migrations add init
 dotnet ef database update
