@@ -30,7 +30,7 @@
 ---
 
 ## 📁 Project Structure
-
+```
 BilloraBackend/Api/
 │
 ├── Controllers/ # API endpoints
@@ -41,7 +41,7 @@ BilloraBackend/Api/
 ├── Migrations/ # EF Core migrations
 ├── Program.cs # Entry point
 └── appsettings.json # Configuration
-
+```
 ---
 
 ## 🗂 Entity Relationship Diagram
