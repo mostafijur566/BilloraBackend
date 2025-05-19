@@ -39,7 +39,6 @@ BilloraBackend/Api/
 ├── Services/ # Business logic
 ├── Repositories/ # Data access layer
 ├── Migrations/ # EF Core migrations
-├── Middleware/ # Custom middleware
 ├── Program.cs # Entry point
 └── appsettings.json # Configuration
 
