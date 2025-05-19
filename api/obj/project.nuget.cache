@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "dgSpecHash": "kt/+sAhDz0Y=",
+  "success": true,
+  "projectFilePath": "D:\\ASP\\BilloraApi\\api\\api.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Mosta\\.nuget\\packages\\microsoft.aspnetcore.openapi\\9.0.4\\microsoft.aspnetcore.openapi.9.0.4.nupkg.sha512",
+    "C:\\Users\\Mosta\\.nuget\\packages\\microsoft.openapi\\1.6.17\\microsoft.openapi.1.6.17.nupkg.sha512"
+  ],
+  "logs": []
+}
