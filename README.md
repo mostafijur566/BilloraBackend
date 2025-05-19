@@ -19,7 +19,7 @@
 
 ## 🧱 Tech Stack
 
-- **Framework:** ASP.NET Core 8.0 Web API
+- **Framework:** ASP.NET Core 9.0 Web API
 - **Database:** SQL Server / PostgreSQL (configurable)
 - **ORM:** Entity Framework Core
 - **Authentication:** JWT Bearer Tokens
