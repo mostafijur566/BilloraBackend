@@ -129,12 +129,33 @@ namespace api.Controllers
                 return Unauthorized(new ErrorResponse(401, "Invalid token or missing company info"));
             }
 
-
-            var company = await _companRepository.DeleteAsync(companyId);
-
+            // Fetch company first to get logo path
+            var company = await _companRepository.GetByIdAsync(companyId);
             if (company == null)
             {
                 return BadRequest(new ErrorResponse(400, "Company not exist"));
+            }
+
+            // Save logo path before deletion
+            var logoPath = company.LogoUrl;
+
+
+            var deletedCompany = await _companRepository.DeleteAsync(companyId);
+
+            if (deletedCompany == null)
+            {
+                return BadRequest(new ErrorResponse(400, "Company not exist"));
+            }
+
+            // Remove logo from wwwroot/logos/
+            if (!string.IsNullOrEmpty(logoPath))
+            {
+                var fileName = Path.GetFileName(logoPath);
+                var fullPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "logos", fileName);
+                if (System.IO.File.Exists(fullPath))
+                {
+                    System.IO.File.Delete(fullPath);
+                }
             }
 
             return NoContent();

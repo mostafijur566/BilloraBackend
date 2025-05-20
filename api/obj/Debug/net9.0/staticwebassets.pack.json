@@ -1,24 +1,8 @@
 {
   "Files": [
     {
-      "Id": "D:\\ASP\\BilloraBackend\\api\\wwwroot\\logos\\36b2b120-17ba-4c2f-9cae-139fef64e17c.png",
-      "PackagePath": "staticwebassets\\logos\\36b2b120-17ba-4c2f-9cae-139fef64e17c.png"
-    },
-    {
-      "Id": "D:\\ASP\\BilloraBackend\\api\\wwwroot\\logos\\67066e63-54a0-47e3-bcc6-56c4970811eb.HEIC",
-      "PackagePath": "staticwebassets\\logos\\67066e63-54a0-47e3-bcc6-56c4970811eb.HEIC"
-    },
-    {
-      "Id": "D:\\ASP\\BilloraBackend\\api\\wwwroot\\logos\\8272389c-b76b-4425-b4a0-405bd489b92d.png",
-      "PackagePath": "staticwebassets\\logos\\8272389c-b76b-4425-b4a0-405bd489b92d.png"
-    },
-    {
-      "Id": "D:\\ASP\\BilloraBackend\\api\\wwwroot\\logos\\System.Func`1[System.Guid].png",
-      "PackagePath": "staticwebassets\\logos\\System.Func`1[System.Guid].png"
-    },
-    {
-      "Id": "D:\\ASP\\BilloraBackend\\api\\wwwroot\\logos\\c63d6f02-5c3e-402a-97e7-753be61171b2.png",
-      "PackagePath": "staticwebassets\\logos\\c63d6f02-5c3e-402a-97e7-753be61171b2.png"
+      "Id": "D:\\ASP\\BilloraBackend\\api\\wwwroot\\logos\\a4b12f1c-7209-4054-8eb5-0fb729efbf06.png",
+      "PackagePath": "staticwebassets\\logos\\a4b12f1c-7209-4054-8eb5-0fb729efbf06.png"
     },
     {
       "Id": "obj\\Debug\\net9.0\\staticwebassets\\msbuild.api.Microsoft.AspNetCore.StaticWebAssetEndpoints.props",

@@ -60,7 +60,13 @@ namespace api.Controllers
                 company = user.Company == null ? null : new CompanyDto
                 {
                     Id = user.Company.Id,
-                    BusinessName = user.Company.BusinessName
+                    BusinessName = user.Company.BusinessName,
+                    ContactName = user.Company.ContactName,
+                    Email = user.Company.Email,
+                    Phone = user.Company.Phone,
+                    Address = user.Company.Address,
+                    TaxId = user.Company.TaxId,
+                    LogoUrl = user.Company.LogoUrl
                 },
                 token = token
             });
