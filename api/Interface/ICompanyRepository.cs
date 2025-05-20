@@ -16,5 +16,6 @@ namespace api.Interface
         Task<String?> SaveLogoAsync(IFormFile? logo);
         Task<Company?> UpdateCompanyAsync(int id, CompanyUpdateDto dto);
         Task<Company?> GetByIdAsync(int id);
+        Task<Company?> DeleteAsync(int id);
     }
 }

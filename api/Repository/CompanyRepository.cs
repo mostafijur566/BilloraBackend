@@ -38,6 +38,20 @@ namespace api.Repository
             .AnyAsync(c => c.BusinessName == businessName || c.Email == email);
         }
 
+        public async Task<Company?> DeleteAsync(int id)
+        {
+            var company = await _context.Companies.FirstOrDefaultAsync(c => c.Id == id);
+
+            if (company == null)
+            {
+                return null;
+            }
+
+            _context.Companies.Remove(company);
+            await _context.SaveChangesAsync();
+            return company;
+        }
+
         public async Task<Company?> GetByIdAsync(int id)
         {
             return await _context.Companies.FirstOrDefaultAsync(c => c.Id == id);

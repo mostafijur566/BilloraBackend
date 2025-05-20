@@ -73,7 +73,7 @@ namespace api.Controllers
                 token = token,
             });
         }
-        [HttpGet("{id}")]
+        [HttpGet("{id:int}")]
         [Authorize]
         public async Task<IActionResult> GetById([FromRoute] int id)
         {
@@ -87,9 +87,9 @@ namespace api.Controllers
             return Ok(company);
         }
 
-        [HttpPut("{id}")]
+        [HttpPut("{id:int}")]
         [Consumes("multipart/form-data")]
-         [Authorize]
+        [Authorize]
         public async Task<IActionResult> Update([FromRoute] int id, [FromForm] CompanyUpdateDto dto)
         {
             if (!ModelState.IsValid)
@@ -107,6 +107,20 @@ namespace api.Controllers
             company.UpdatedAt = DateTime.UtcNow;
 
             return Ok(company.ToCompanyUpdate());
+        }
+
+        [HttpDelete("{id:int}")]
+        [Authorize]
+        public async Task<IActionResult> Delete([FromRoute] int id)
+        {
+            var company = await _companRepository.DeleteAsync(id);
+
+            if (company == null)
+            {
+                return BadRequest(new ErrorResponse(400, "Company not exist"));
+            }
+
+            return NoContent();
         }
     }
 }
