@@ -16,7 +16,6 @@ namespace api.Mappers
                 Phone = dto.Phone,
                 Address = dto.Address,
                 TaxId = dto.TaxId,
-                LogoUrl = dto.LogoUrl,
                 CreatedAt = DateTime.UtcNow,
                 UpdatedAt = DateTime.UtcNow
             };

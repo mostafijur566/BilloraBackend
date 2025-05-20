@@ -169,3 +169,4 @@ D:\ASP\BilloraBackend\api\obj\Debug\net9.0\refint\api.dll
 D:\ASP\BilloraBackend\api\obj\Debug\net9.0\api.pdb
 D:\ASP\BilloraBackend\api\obj\Debug\net9.0\api.genruntimeconfig.cache
 D:\ASP\BilloraBackend\api\obj\Debug\net9.0\ref\api.dll
+D:\ASP\BilloraBackend\api\bin\Debug\net9.0\api.staticwebassets.runtime.json

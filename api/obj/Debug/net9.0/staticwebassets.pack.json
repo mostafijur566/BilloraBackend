@@ -1,0 +1,33 @@
+{
+  "Files": [
+    {
+      "Id": "D:\\ASP\\BilloraBackend\\api\\wwwroot\\logos\\36b2b120-17ba-4c2f-9cae-139fef64e17c.png",
+      "PackagePath": "staticwebassets\\logos\\36b2b120-17ba-4c2f-9cae-139fef64e17c.png"
+    },
+    {
+      "Id": "D:\\ASP\\BilloraBackend\\api\\wwwroot\\logos\\System.Func`1[System.Guid].png",
+      "PackagePath": "staticwebassets\\logos\\System.Func`1[System.Guid].png"
+    },
+    {
+      "Id": "obj\\Debug\\net9.0\\staticwebassets\\msbuild.api.Microsoft.AspNetCore.StaticWebAssetEndpoints.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssetEndpoints.props"
+    },
+    {
+      "Id": "obj\\Debug\\net9.0\\staticwebassets\\msbuild.api.Microsoft.AspNetCore.StaticWebAssets.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
+    },
+    {
+      "Id": "obj\\Debug\\net9.0\\staticwebassets\\msbuild.build.api.props",
+      "PackagePath": "build\\api.props"
+    },
+    {
+      "Id": "obj\\Debug\\net9.0\\staticwebassets\\msbuild.buildMultiTargeting.api.props",
+      "PackagePath": "buildMultiTargeting\\api.props"
+    },
+    {
+      "Id": "obj\\Debug\\net9.0\\staticwebassets\\msbuild.buildTransitive.api.props",
+      "PackagePath": "buildTransitive\\api.props"
+    }
+  ],
+  "ElementsToRemove": []
+}

@@ -61,6 +61,8 @@ app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
 
+app.UseStaticFiles();
+
 app.MapControllers(); // Map attribute-routed controllers like /api/company/registration/owner
 
 app.Run();

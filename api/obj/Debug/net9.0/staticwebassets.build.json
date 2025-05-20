@@ -1,12 +1,228 @@
 {
   "Version": 1,
-  "Hash": "A9PKRZfZUTDhj1QRyCFFkEHzqJ04Y7sk6OEkYYD+as4=",
+  "Hash": "zIwMvN0o2+A8fMPoVPj0S8MW30kHZZimLRqe9r51R8U=",
   "Source": "api",
   "BasePath": "_content/api",
   "Mode": "Default",
   "ManifestType": "Build",
   "ReferencedProjectsConfiguration": [],
-  "DiscoveryPatterns": [],
-  "Assets": [],
-  "Endpoints": []
+  "DiscoveryPatterns": [
+    {
+      "Name": "api\\wwwroot",
+      "Source": "api",
+      "ContentRoot": "D:\\ASP\\BilloraBackend\\api\\wwwroot\\",
+      "BasePath": "_content/api",
+      "Pattern": "**"
+    }
+  ],
+  "Assets": [
+    {
+      "Identity": "D:\\ASP\\BilloraBackend\\api\\wwwroot\\logos\\36b2b120-17ba-4c2f-9cae-139fef64e17c.png",
+      "SourceId": "api",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\ASP\\BilloraBackend\\api\\wwwroot\\",
+      "BasePath": "_content/api",
+      "RelativePath": "logos/36b2b120-17ba-4c2f-9cae-139fef64e17c#[.{fingerprint}]?.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "ocwjrck4jp",
+      "Integrity": "eOpwIev8BTOW6KeZPEbu/m1iaNyBEWB8BJxD0AcaA+A=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\logos\\36b2b120-17ba-4c2f-9cae-139fef64e17c.png"
+    },
+    {
+      "Identity": "D:\\ASP\\BilloraBackend\\api\\wwwroot\\logos\\System.Func`1[System.Guid].png",
+      "SourceId": "api",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\ASP\\BilloraBackend\\api\\wwwroot\\",
+      "BasePath": "_content/api",
+      "RelativePath": "logos/System.Func`1[System.Guid]#[.{fingerprint}]?.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "ocwjrck4jp",
+      "Integrity": "eOpwIev8BTOW6KeZPEbu/m1iaNyBEWB8BJxD0AcaA+A=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\logos\\System.Func`1[System.Guid].png"
+    }
+  ],
+  "Endpoints": [
+    {
+      "Route": "logos/36b2b120-17ba-4c2f-9cae-139fef64e17c.ocwjrck4jp.png",
+      "AssetFile": "D:\\ASP\\BilloraBackend\\api\\wwwroot\\logos\\36b2b120-17ba-4c2f-9cae-139fef64e17c.png",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "74235"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/png"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"eOpwIev8BTOW6KeZPEbu/m1iaNyBEWB8BJxD0AcaA+A=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Tue, 20 May 2025 15:13:23 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "ocwjrck4jp"
+        },
+        {
+          "Name": "label",
+          "Value": "logos/36b2b120-17ba-4c2f-9cae-139fef64e17c.png"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-eOpwIev8BTOW6KeZPEbu/m1iaNyBEWB8BJxD0AcaA+A="
+        }
+      ]
+    },
+    {
+      "Route": "logos/36b2b120-17ba-4c2f-9cae-139fef64e17c.png",
+      "AssetFile": "D:\\ASP\\BilloraBackend\\api\\wwwroot\\logos\\36b2b120-17ba-4c2f-9cae-139fef64e17c.png",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "74235"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/png"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"eOpwIev8BTOW6KeZPEbu/m1iaNyBEWB8BJxD0AcaA+A=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Tue, 20 May 2025 15:13:23 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=3600, must-revalidate"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-eOpwIev8BTOW6KeZPEbu/m1iaNyBEWB8BJxD0AcaA+A="
+        }
+      ]
+    },
+    {
+      "Route": "logos/System.Func`1[System.Guid].ocwjrck4jp.png",
+      "AssetFile": "D:\\ASP\\BilloraBackend\\api\\wwwroot\\logos\\System.Func`1[System.Guid].png",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "74235"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/png"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"eOpwIev8BTOW6KeZPEbu/m1iaNyBEWB8BJxD0AcaA+A=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Tue, 20 May 2025 15:08:35 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "ocwjrck4jp"
+        },
+        {
+          "Name": "label",
+          "Value": "logos/System.Func`1[System.Guid].png"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-eOpwIev8BTOW6KeZPEbu/m1iaNyBEWB8BJxD0AcaA+A="
+        }
+      ]
+    },
+    {
+      "Route": "logos/System.Func`1[System.Guid].png",
+      "AssetFile": "D:\\ASP\\BilloraBackend\\api\\wwwroot\\logos\\System.Func`1[System.Guid].png",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "74235"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/png"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"eOpwIev8BTOW6KeZPEbu/m1iaNyBEWB8BJxD0AcaA+A=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Tue, 20 May 2025 15:08:35 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=3600, must-revalidate"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-eOpwIev8BTOW6KeZPEbu/m1iaNyBEWB8BJxD0AcaA+A="
+        }
+      ]
+    }
+  ]
 }

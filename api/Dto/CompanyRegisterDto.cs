@@ -14,7 +14,9 @@ namespace api.Dto
         public string Phone { get; set; } = string.Empty;
         public string Address { get; set; } = string.Empty;
         public string TaxId { get; set; } = string.Empty;
-        public string LogoUrl { get; set; } = string.Empty;
+
+        // File upload
+        public IFormFile? Logo { get; set; }
 
         // User Info
         public string Username { get; set; } = string.Empty;

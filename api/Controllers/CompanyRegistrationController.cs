@@ -31,7 +31,8 @@ namespace api.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> RegisterOwner([FromBody] CompanyRegisterDto dto)
+        [Consumes("multipart/form-data")]
+        public async Task<IActionResult> RegisterOwner([FromForm] CompanyRegisterDto dto)
         {
             if (dto.Password != dto.ConfirmPassword)
                 return BadRequest(new ErrorResponse(400, "Passwords do not match."));
@@ -43,8 +44,28 @@ namespace api.Controllers
             if (await _companRepository.UserExistsAsync(dto.UserEmail, dto.UserEmail))
                 return BadRequest(new ErrorResponse(400, "A user with the same username or email already exists."));
 
+            // Save logo if present
+            string? logoUrl = null;
+            if (dto.Logo != null)
+            {
+                var uploadsDir = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "logos");
+                if (!Directory.Exists(uploadsDir))
+                    Directory.CreateDirectory(uploadsDir);
+
+                var fileName = $"{Guid.NewGuid()}{Path.GetExtension(dto.Logo.FileName)}";
+                var filePath = Path.Combine(uploadsDir, fileName);
+
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    await dto.Logo.CopyToAsync(stream);
+                }
+
+                logoUrl = $"/ logos /{fileName}";
+            }
+
             // Create company
             var company = dto.ToCompany();
+            company.LogoUrl = logoUrl ?? ""; // store relative path or full URL if needed
             company = await _companRepository.AddCompanyAsync(company);
 
             // Create owner user
