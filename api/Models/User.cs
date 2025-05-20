@@ -11,7 +11,7 @@ namespace api.Models
     {
         public int Id { get; set; }
 
-        [ForeignKey("Company")]
+        [Required]
         public int CompanyId { get; set; }
 
         [Required]
@@ -41,6 +41,7 @@ namespace api.Models
         public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
 
         // Navigation property
-        public Company? company { get; set; }
+        [ForeignKey("CompanyId")]
+        public Company? Company { get; set; }
     }
 }
