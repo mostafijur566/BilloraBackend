@@ -44,6 +44,7 @@ builder.Services.AddAuthentication(options =>
 
 
 builder.Services.AddScoped<ICompanyRepository, CompanyRepository>();
+builder.Services.AddScoped<IAccountRepository, AccountRepository>();
 builder.Services.AddScoped<JwtService>();
 
 var app = builder.Build();
