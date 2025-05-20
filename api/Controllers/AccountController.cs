@@ -112,7 +112,7 @@ namespace api.Controllers
                 new
                 {
                     message = "User created successfully",
-                    user = user.ToUserDto()
+                    user = user.ToAccountUserDto()
                 }
             );
         }

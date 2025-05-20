@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "LOdIgUvVnuoYZ7gJBHzvG3o2LrDv3UzeQbl8bYdW5UU=",
+  "Hash": "N5YupoxPdYlpYMtom7tFrMmKySw/QuCHPOkg++g2CSw=",
   "Source": "api",
   "BasePath": "_content/api",
   "Mode": "Default",
@@ -17,12 +17,12 @@
   ],
   "Assets": [
     {
-      "Identity": "D:\\ASP\\BilloraBackend\\api\\wwwroot\\logos\\a4b12f1c-7209-4054-8eb5-0fb729efbf06.png",
+      "Identity": "D:\\ASP\\BilloraBackend\\api\\wwwroot\\logos\\2de94d31-5f6b-419a-b546-f769a480dad9.png",
       "SourceId": "api",
       "SourceType": "Discovered",
       "ContentRoot": "D:\\ASP\\BilloraBackend\\api\\wwwroot\\",
       "BasePath": "_content/api",
-      "RelativePath": "logos/a4b12f1c-7209-4054-8eb5-0fb729efbf06#[.{fingerprint}]?.png",
+      "RelativePath": "logos/2de94d31-5f6b-419a-b546-f769a480dad9#[.{fingerprint}]?.png",
       "AssetKind": "All",
       "AssetMode": "All",
       "AssetRole": "Primary",
@@ -35,13 +35,13 @@
       "Integrity": "eOpwIev8BTOW6KeZPEbu/m1iaNyBEWB8BJxD0AcaA+A=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\logos\\a4b12f1c-7209-4054-8eb5-0fb729efbf06.png"
+      "OriginalItemSpec": "wwwroot\\logos\\2de94d31-5f6b-419a-b546-f769a480dad9.png"
     }
   ],
   "Endpoints": [
     {
-      "Route": "logos/a4b12f1c-7209-4054-8eb5-0fb729efbf06.ocwjrck4jp.png",
-      "AssetFile": "D:\\ASP\\BilloraBackend\\api\\wwwroot\\logos\\a4b12f1c-7209-4054-8eb5-0fb729efbf06.png",
+      "Route": "logos/2de94d31-5f6b-419a-b546-f769a480dad9.ocwjrck4jp.png",
+      "AssetFile": "D:\\ASP\\BilloraBackend\\api\\wwwroot\\logos\\2de94d31-5f6b-419a-b546-f769a480dad9.png",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -62,7 +62,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Tue, 20 May 2025 18:38:35 GMT"
+          "Value": "Tue, 20 May 2025 18:42:04 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -76,7 +76,7 @@
         },
         {
           "Name": "label",
-          "Value": "logos/a4b12f1c-7209-4054-8eb5-0fb729efbf06.png"
+          "Value": "logos/2de94d31-5f6b-419a-b546-f769a480dad9.png"
         },
         {
           "Name": "integrity",
@@ -85,8 +85,8 @@
       ]
     },
     {
-      "Route": "logos/a4b12f1c-7209-4054-8eb5-0fb729efbf06.png",
-      "AssetFile": "D:\\ASP\\BilloraBackend\\api\\wwwroot\\logos\\a4b12f1c-7209-4054-8eb5-0fb729efbf06.png",
+      "Route": "logos/2de94d31-5f6b-419a-b546-f769a480dad9.png",
+      "AssetFile": "D:\\ASP\\BilloraBackend\\api\\wwwroot\\logos\\2de94d31-5f6b-419a-b546-f769a480dad9.png",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -107,7 +107,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Tue, 20 May 2025 18:38:35 GMT"
+          "Value": "Tue, 20 May 2025 18:42:04 GMT"
         },
         {
           "Name": "Cache-Control",

@@ -24,9 +24,9 @@ namespace api.Mappers
             };
         }
 
-        public static UserDto ToUserDto(this User user)
+        public static AccountUserDto ToAccountUserDto(this User user)
         {
-            return new UserDto
+            return new AccountUserDto
             {
                 Id = user.Id,
                 Username = user.Username,
