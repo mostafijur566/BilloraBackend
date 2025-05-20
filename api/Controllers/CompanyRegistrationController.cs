@@ -1,9 +1,12 @@
 using System;
 using api.Data;
 using api.Dto;
+using api.Interface;
 using api.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using api.Mappers;
+using api.Response;
 
 namespace api.Controllers
 {
@@ -12,63 +15,34 @@ namespace api.Controllers
     public class CompanyRegistrationController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
+        private readonly ICompanyRepository _companRepository;
 
-        public CompanyRegistrationController(ApplicationDbContext context)
+        public CompanyRegistrationController(ApplicationDbContext context, ICompanyRepository companyRepository)
         {
             _context = context;
+            _companRepository = companyRepository;
         }
 
-        [HttpPost("owner")]
+        [HttpPost]
         public async Task<IActionResult> RegisterOwner([FromBody] CompanyRegisterDto dto)
         {
             if (dto.Password != dto.ConfirmPassword)
-                return BadRequest("Passwords do not match.");
+                return BadRequest(new ErrorResponse(400, "Passwords do not match."));
 
             // Check for duplicate company or user
-            bool companyExists = await _context.Companies
-                .AnyAsync(c => c.BusinessName == dto.BusinessName || c.Email == dto.Email);
-            bool userExists = await _context.Users
-                .AnyAsync(u => u.Username == dto.Username || u.Email == dto.UserEmail);
+            if (await _companRepository.CompanyExistsAsync(dto.BusinessName, dto.Email))
+                return BadRequest(new ErrorResponse(400, "A company with the same name or email already exists."));
 
-            if (companyExists)
-                return BadRequest("A company with the same name or email already exists.");
-            if (userExists)
-                return BadRequest("A user with the same username or email already exists.");
+            if (await _companRepository.UserExistsAsync(dto.UserEmail, dto.UserEmail))
+                return BadRequest(new ErrorResponse(400, "A user with the same username or email already exists."));
 
             // Create company
-            var company = new Company
-            {
-                BusinessName = dto.BusinessName,
-                ContactName = dto.ContactName,
-                Email = dto.Email,
-                Phone = dto.Phone,
-                Address = dto.Address,
-                TaxId = dto.TaxId,
-                LogoUrl = dto.LogoUrl,
-                CreatedAt = DateTime.UtcNow,
-                UpdatedAt = DateTime.UtcNow
-            };
-
-            _context.Companies.Add(company);
-            await _context.SaveChangesAsync();
+            var company = dto.ToCompany();
+            company = await _companRepository.AddCompanyAsync(company);
 
             // Create owner user
-            var user = new User
-            {
-                CompanyId = company.Id,
-                Username = dto.Username,
-                Email = dto.UserEmail,
-                Fullname = dto.Fullname,
-                Role = string.IsNullOrEmpty(dto.Role) ? "Owner" : dto.Role,
-                Phone = dto.PhoneNumber,
-                PasswordHash = BCrypt.Net.BCrypt.HashPassword(dto.Password),
-                IsActive = true,
-                CreatedAt = DateTime.UtcNow,
-                UpdatedAt = DateTime.UtcNow
-            };
-
-            _context.Users.Add(user);
-            await _context.SaveChangesAsync();
+            var user = dto.ToOwnerUser(company.Id);
+            user = await _companRepository.AddUserAsync(user);
 
             return Ok(new
             {

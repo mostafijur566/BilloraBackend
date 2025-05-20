@@ -1,4 +1,6 @@
 using api.Data;
+using api.Interface;
+using api.Repository;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -12,6 +14,10 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 
 // Add Controllers
 builder.Services.AddControllers();
+
+// Add OpenAPI/Swagger
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
 
 // Configure JWT Authentication
 var jwtSettings = builder.Configuration.GetSection("JWT");
@@ -34,9 +40,9 @@ builder.Services.AddAuthentication(options =>
     };
 });
 
-// Add OpenAPI/Swagger
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+
+
+builder.Services.AddScoped<ICompanyRepository, CompanyRepository>();
 
 var app = builder.Build();
 
