@@ -8,6 +8,8 @@ namespace api.Interface
 {
     public interface IUserRepository
     {
-        Task<User?> GetUser(int id);
+        Task<User?> GetUserAsync(int id);
+        Task<User?> UpdateAsync(int id, User userModel);
+        Task<List<User>?> GetAllUserAsync(int companyId, int userId);
     }
 }

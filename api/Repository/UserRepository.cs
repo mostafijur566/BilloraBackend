@@ -17,9 +17,31 @@ namespace api.Repository
             _context = context;
         }
 
-        public Task<User?> GetUser(int id)
+        public async Task<List<User>?> GetAllUserAsync(int companyId, int userId)
+        {
+            return await _context.Users.Where(u => u.CompanyId == companyId && u.Id != userId).ToListAsync();
+        }
+
+        public Task<User?> GetUserAsync(int id)
         {
             return _context.Users.FirstOrDefaultAsync(u => u.Id == id);
+        }
+
+        public async Task<User?> UpdateAsync(int id, User userModel)
+        {
+            var existingUser = await _context.Users.FirstOrDefaultAsync(u => u.Id == id);
+
+            if (existingUser == null)
+            {
+                return null;
+            }
+
+            existingUser.Email = userModel.Email;
+            existingUser.Fullname = userModel.Fullname;
+            existingUser.Phone = userModel.Phone;
+
+            await _context.SaveChangesAsync();
+            return existingUser;
         }
     }
 }

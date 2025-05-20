@@ -22,5 +22,15 @@ namespace api.Mappers
                 CompanyId = user.CompanyId,
             };
         }
+
+        public static User ToUserFormUpdate(this UserUpdateDto userDto)
+        {
+            return new User
+            {
+                Email = userDto.Email,
+                Fullname = userDto.Fullname,
+                Phone = userDto.Phone,
+            };
+        }
     }
 }
