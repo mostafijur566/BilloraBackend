@@ -13,6 +13,10 @@
       "PackagePath": "staticwebassets\\logos\\System.Func`1[System.Guid].png"
     },
     {
+      "Id": "D:\\ASP\\BilloraBackend\\api\\wwwroot\\logos\\c63d6f02-5c3e-402a-97e7-753be61171b2.png",
+      "PackagePath": "staticwebassets\\logos\\c63d6f02-5c3e-402a-97e7-753be61171b2.png"
+    },
+    {
       "Id": "obj\\Debug\\net9.0\\staticwebassets\\msbuild.api.Microsoft.AspNetCore.StaticWebAssetEndpoints.props",
       "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssetEndpoints.props"
     },
