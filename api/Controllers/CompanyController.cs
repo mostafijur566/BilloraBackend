@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using api.Mappers;
 using api.Response;
 using api.Service;
+using Microsoft.AspNetCore.Authorization;
 
 namespace api.Controllers
 {
@@ -34,6 +35,11 @@ namespace api.Controllers
         [Consumes("multipart/form-data")]
         public async Task<IActionResult> RegisterOwner([FromForm] CompanyRegisterDto dto)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             if (dto.Password != dto.ConfirmPassword)
                 return BadRequest(new ErrorResponse(400, "Passwords do not match."));
 
@@ -68,6 +74,7 @@ namespace api.Controllers
             });
         }
         [HttpGet("{id}")]
+        [Authorize]
         public async Task<IActionResult> GetById([FromRoute] int id)
         {
             var company = await _companRepository.GetByIdAsync(id);
@@ -82,8 +89,14 @@ namespace api.Controllers
 
         [HttpPut("{id}")]
         [Consumes("multipart/form-data")]
-        public async Task<IActionResult> Update([FromRoute] int id,[FromForm] CompanyUpdateDto dto)
+         [Authorize]
+        public async Task<IActionResult> Update([FromRoute] int id, [FromForm] CompanyUpdateDto dto)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             var company = await _companRepository.UpdateCompanyAsync(id, dto);
 
             if (company == null)

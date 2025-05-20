@@ -26,6 +26,11 @@ namespace api.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginDto loginDto)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             // Find user by username or email
             var user = await _accountRepository.GetUserByUsernameOrEmailAsync(loginDto.UsernameOrEmail);
 
@@ -64,6 +69,11 @@ namespace api.Controllers
         [HttpPost("register")]
         public async Task<IActionResult> Register(RegistrationDto registrationDto)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             var existingUser = await _accountRepository.GetUserByEmailAsync(registrationDto.Email);
             if (existingUser != null)
             {

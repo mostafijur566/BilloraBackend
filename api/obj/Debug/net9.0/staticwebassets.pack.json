@@ -1,6 +1,10 @@
 {
   "Files": [
     {
+      "Id": "D:\\ASP\\BilloraBackend\\api\\wwwroot\\logos\\1b57ddc2-70e0-4233-b622-2aa900e930ea.HEIC",
+      "PackagePath": "staticwebassets\\logos\\1b57ddc2-70e0-4233-b622-2aa900e930ea.HEIC"
+    },
+    {
       "Id": "D:\\ASP\\BilloraBackend\\api\\wwwroot\\logos\\36b2b120-17ba-4c2f-9cae-139fef64e17c.png",
       "PackagePath": "staticwebassets\\logos\\36b2b120-17ba-4c2f-9cae-139fef64e17c.png"
     },

@@ -1,5 +1,17 @@
 ﻿<Project>
   <ItemGroup>
+    <StaticWebAssetEndpoint Include="_content/api/logos/1b57ddc2-70e0-4233-b622-2aa900e930ea.56cwzhjg81.HEIC">
+      <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\logos\1b57ddc2-70e0-4233-b622-2aa900e930ea.HEIC'))</AssetFile>
+      <Selectors><![CDATA[[]]]></Selectors>
+      <EndpointProperties><![CDATA[[{"Name":"fingerprint","Value":"56cwzhjg81"},{"Name":"integrity","Value":"sha256-Y\u002BMkwxYCePTCeuML0XIQr\u002BwO\u002B8B2Mr/oJ7LNERHkDdA="},{"Name":"label","Value":"_content/api/logos/1b57ddc2-70e0-4233-b622-2aa900e930ea.HEIC"}]]]></EndpointProperties>
+      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"max-age=31536000, immutable"},{"Name":"Content-Length","Value":"1463365"},{"Name":"Content-Type","Value":"application/octet-stream"},{"Name":"ETag","Value":"\u0022Y\u002BMkwxYCePTCeuML0XIQr\u002BwO\u002B8B2Mr/oJ7LNERHkDdA=\u0022"},{"Name":"Last-Modified","Value":"Tue, 20 May 2025 16:25:10 GMT"}]]]></ResponseHeaders>
+    </StaticWebAssetEndpoint>
+    <StaticWebAssetEndpoint Include="_content/api/logos/1b57ddc2-70e0-4233-b622-2aa900e930ea.HEIC">
+      <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\logos\1b57ddc2-70e0-4233-b622-2aa900e930ea.HEIC'))</AssetFile>
+      <Selectors><![CDATA[[]]]></Selectors>
+      <EndpointProperties><![CDATA[[{"Name":"integrity","Value":"sha256-Y\u002BMkwxYCePTCeuML0XIQr\u002BwO\u002B8B2Mr/oJ7LNERHkDdA="}]]]></EndpointProperties>
+      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"no-cache"},{"Name":"Content-Length","Value":"1463365"},{"Name":"Content-Type","Value":"application/octet-stream"},{"Name":"ETag","Value":"\u0022Y\u002BMkwxYCePTCeuML0XIQr\u002BwO\u002B8B2Mr/oJ7LNERHkDdA=\u0022"},{"Name":"Last-Modified","Value":"Tue, 20 May 2025 16:25:10 GMT"}]]]></ResponseHeaders>
+    </StaticWebAssetEndpoint>
     <StaticWebAssetEndpoint Include="_content/api/logos/36b2b120-17ba-4c2f-9cae-139fef64e17c.ocwjrck4jp.png">
       <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\logos\36b2b120-17ba-4c2f-9cae-139fef64e17c.png'))</AssetFile>
       <Selectors><![CDATA[[]]]></Selectors>

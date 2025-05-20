@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "zIwMvN0o2+A8fMPoVPj0S8MW30kHZZimLRqe9r51R8U=",
+  "Hash": "+yZTguNgmcw6SX+3GmPxFYV2wyjeT+aBWCJjnK0cWZU=",
   "Source": "api",
   "BasePath": "_content/api",
   "Mode": "Default",
@@ -16,6 +16,27 @@
     }
   ],
   "Assets": [
+    {
+      "Identity": "D:\\ASP\\BilloraBackend\\api\\wwwroot\\logos\\1b57ddc2-70e0-4233-b622-2aa900e930ea.HEIC",
+      "SourceId": "api",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\ASP\\BilloraBackend\\api\\wwwroot\\",
+      "BasePath": "_content/api",
+      "RelativePath": "logos/1b57ddc2-70e0-4233-b622-2aa900e930ea#[.{fingerprint}]?.HEIC",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "56cwzhjg81",
+      "Integrity": "Y+MkwxYCePTCeuML0XIQr+wO+8B2Mr/oJ7LNERHkDdA=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\logos\\1b57ddc2-70e0-4233-b622-2aa900e930ea.HEIC"
+    },
     {
       "Identity": "D:\\ASP\\BilloraBackend\\api\\wwwroot\\logos\\36b2b120-17ba-4c2f-9cae-139fef64e17c.png",
       "SourceId": "api",
@@ -60,6 +81,88 @@
     }
   ],
   "Endpoints": [
+    {
+      "Route": "logos/1b57ddc2-70e0-4233-b622-2aa900e930ea.56cwzhjg81.HEIC",
+      "AssetFile": "D:\\ASP\\BilloraBackend\\api\\wwwroot\\logos\\1b57ddc2-70e0-4233-b622-2aa900e930ea.HEIC",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "1463365"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "application/octet-stream"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"Y+MkwxYCePTCeuML0XIQr+wO+8B2Mr/oJ7LNERHkDdA=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Tue, 20 May 2025 16:25:10 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "56cwzhjg81"
+        },
+        {
+          "Name": "label",
+          "Value": "logos/1b57ddc2-70e0-4233-b622-2aa900e930ea.HEIC"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-Y+MkwxYCePTCeuML0XIQr+wO+8B2Mr/oJ7LNERHkDdA="
+        }
+      ]
+    },
+    {
+      "Route": "logos/1b57ddc2-70e0-4233-b622-2aa900e930ea.HEIC",
+      "AssetFile": "D:\\ASP\\BilloraBackend\\api\\wwwroot\\logos\\1b57ddc2-70e0-4233-b622-2aa900e930ea.HEIC",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "1463365"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "application/octet-stream"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"Y+MkwxYCePTCeuML0XIQr+wO+8B2Mr/oJ7LNERHkDdA=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Tue, 20 May 2025 16:25:10 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-Y+MkwxYCePTCeuML0XIQr+wO+8B2Mr/oJ7LNERHkDdA="
+        }
+      ]
+    },
     {
       "Route": "logos/36b2b120-17ba-4c2f-9cae-139fef64e17c.ocwjrck4jp.png",
       "AssetFile": "D:\\ASP\\BilloraBackend\\api\\wwwroot\\logos\\36b2b120-17ba-4c2f-9cae-139fef64e17c.png",
