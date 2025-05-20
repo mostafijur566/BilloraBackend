@@ -60,7 +60,7 @@ namespace api.Controllers
                 company = user.Company == null ? null : new CompanyDto
                 {
                     Id = user.Company.Id,
-                    Name = user.Company.BusinessName         
+                    BusinessName = user.Company.BusinessName
                 },
                 token = token
             });
@@ -74,6 +74,11 @@ namespace api.Controllers
                 return BadRequest(ModelState);
             }
 
+            var companyIdClaim = User.FindFirst("companyId")?.Value;
+            if (string.IsNullOrEmpty(companyIdClaim) || !int.TryParse(companyIdClaim, out var companyId))
+                return Unauthorized(new ErrorResponse(401, "Invalid or missing company ID in token"));
+
+
             var existingUser = await _accountRepository.GetUserByEmailAsync(registrationDto.Email);
             if (existingUser != null)
             {
@@ -86,7 +91,7 @@ namespace api.Controllers
                 return BadRequest(new ErrorResponse(400, "Username already exists."));
             }
 
-            var companyExists = await _accountRepository.CompanyExistsAsync(registrationDto.CompanyId);
+            var companyExists = await _accountRepository.CompanyExistsAsync(companyId);
             if (companyExists == null)
             {
                 return BadRequest(new ErrorResponse(400, "Company does not exist."));
@@ -94,7 +99,7 @@ namespace api.Controllers
 
             var hashedPassword = BCrypt.Net.BCrypt.HashPassword(registrationDto.Password);
 
-            var user = registrationDto.ToUserCreate(hashedPassword);
+            var user = registrationDto.ToUserCreate(hashedPassword, companyId);
             await _accountRepository.CreateUserAsync(user);
 
             return Ok(

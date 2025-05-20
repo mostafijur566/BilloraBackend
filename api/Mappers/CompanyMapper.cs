@@ -38,15 +38,30 @@ namespace api.Mappers
             };
         }
 
-        public static CompanyUpdateDto ToCompanyUpdate(this Company company)
+        public static Company ToCompanyUpdate(this CompanyUpdateDto company)
         {
-            return new CompanyUpdateDto
+            return new Company
             {
                 BusinessName = company.BusinessName,
                 ContactName = company.ContactName,
                 Email = company.Email,
                 Phone = company.Phone,
                 Address = company.Address,
+            };
+        }
+
+         public static CompanyDto ToCompanyGet(this Company dto)
+        {
+            return new CompanyDto
+            {
+                Id = dto.Id,
+                BusinessName = dto.BusinessName,
+                ContactName = dto.ContactName,
+                Email = dto.Email,
+                Phone = dto.Phone,
+                Address = dto.Address,
+                TaxId = dto.TaxId,
+                LogoUrl = dto.LogoUrl
             };
         }
     }

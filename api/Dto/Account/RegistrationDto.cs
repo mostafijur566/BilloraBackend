@@ -26,13 +26,13 @@ namespace api.Dto
 
         [Phone]
         [MaxLength(20, ErrorMessage = "Phone number can't be over 20 characters")]
-        public string Phone { get; set; } = string.Empty;
+        public string? Phone { get; set; }
 
         [Required]
         [MinLength(12, ErrorMessage = "Password should be at least 12 characters")]
         public string Password { get; set; } = string.Empty;
         
-        [Required]
-        public int CompanyId { get; set; }
+        // [Required]
+        // public int CompanyId { get; set; }
     }
 }

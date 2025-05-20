@@ -84,7 +84,7 @@ namespace api.Controllers
                 return BadRequest(new ErrorResponse(400, "Company not exist"));
             }
 
-            return Ok(company);
+            return Ok(company.ToCompanyGet());
         }
 
         [HttpPut("{id:int}")]
@@ -106,14 +106,31 @@ namespace api.Controllers
 
             company.UpdatedAt = DateTime.UtcNow;
 
-            return Ok(company.ToCompanyUpdate());
+            return Ok(new
+            {
+                BusinessName = dto.BusinessName,
+                ContactName = dto.ContactName,
+                Email = dto.Email,
+                Phone = dto.Phone,
+                Address = dto.Address,
+                LogoUrl = company.LogoUrl
+            });
         }
 
-        [HttpDelete("{id:int}")]
+        [HttpDelete("delete")]
         [Authorize]
-        public async Task<IActionResult> Delete([FromRoute] int id)
+        public async Task<IActionResult> Delete()
         {
-            var company = await _companRepository.DeleteAsync(id);
+
+            var companyIdClaim = User.FindFirst("companyId")?.Value;
+
+            if (string.IsNullOrEmpty(companyIdClaim) || !int.TryParse(companyIdClaim, out var companyId))
+            {
+                return Unauthorized(new ErrorResponse(401, "Invalid token or missing company info"));
+            }
+
+
+            var company = await _companRepository.DeleteAsync(companyId);
 
             if (company == null)
             {

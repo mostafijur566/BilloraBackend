@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using api.Dto;
+using api.Dto.Account;
 using api.Models;
 
 namespace api.Mappers
 {
     public static class AccountMapper
     {
-        public static User ToUserCreate(this RegistrationDto dto, string hashedPassword)
+        public static User ToUserCreate(this RegistrationDto dto, string hashedPassword, int companyId)
         {
             return new User
             {
@@ -18,15 +19,16 @@ namespace api.Mappers
                 Fullname = dto.FullName,
                 Phone = dto.Phone,
                 Role = dto.Role,
-                CompanyId = dto.CompanyId,
+                CompanyId = companyId,
                 PasswordHash = hashedPassword
             };
         }
 
-        public static User ToUserDto(this User user)
+        public static UserDto ToUserDto(this User user)
         {
-            return new User
+            return new UserDto
             {
+                Id = user.Id,
                 Username = user.Username,
                 Email = user.Email,
                 Fullname = user.Fullname,

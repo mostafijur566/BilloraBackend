@@ -1,12 +1,16 @@
 {
   "Files": [
     {
-      "Id": "D:\\ASP\\BilloraBackend\\api\\wwwroot\\logos\\1b57ddc2-70e0-4233-b622-2aa900e930ea.HEIC",
-      "PackagePath": "staticwebassets\\logos\\1b57ddc2-70e0-4233-b622-2aa900e930ea.HEIC"
-    },
-    {
       "Id": "D:\\ASP\\BilloraBackend\\api\\wwwroot\\logos\\36b2b120-17ba-4c2f-9cae-139fef64e17c.png",
       "PackagePath": "staticwebassets\\logos\\36b2b120-17ba-4c2f-9cae-139fef64e17c.png"
+    },
+    {
+      "Id": "D:\\ASP\\BilloraBackend\\api\\wwwroot\\logos\\67066e63-54a0-47e3-bcc6-56c4970811eb.HEIC",
+      "PackagePath": "staticwebassets\\logos\\67066e63-54a0-47e3-bcc6-56c4970811eb.HEIC"
+    },
+    {
+      "Id": "D:\\ASP\\BilloraBackend\\api\\wwwroot\\logos\\8272389c-b76b-4425-b4a0-405bd489b92d.png",
+      "PackagePath": "staticwebassets\\logos\\8272389c-b76b-4425-b4a0-405bd489b92d.png"
     },
     {
       "Id": "D:\\ASP\\BilloraBackend\\api\\wwwroot\\logos\\System.Func`1[System.Guid].png",

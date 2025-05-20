@@ -6,23 +6,15 @@ using System.Threading.Tasks;
 
 namespace api.Dto
 {
-    public class CompanyUpdateDto
+    public class CompanyDto
     {
-        [MaxLength(50, ErrorMessage = "Business name can't be over 50 characters")]
+        public int Id { get; set; }
         public string BusinessName { get; set; } = string.Empty;
-
-        [MaxLength(100, ErrorMessage = "Contact name can't be over 100 characters")]
         public string ContactName { get; set; } = string.Empty;
-
-        [EmailAddress]
         public string Email { get; set; } = string.Empty;
-
-        [Phone]
-        [MaxLength(20, ErrorMessage = "Phone number can't be over 20 characters")]
         public string Phone { get; set; } = string.Empty;
-
-        [MaxLength(250, ErrorMessage = "Address can't be over 250 characters")]
         public string Address { get; set; } = string.Empty;
-         public IFormFile? Logo { get; set; }
+        public string TaxId { get; set; } = string.Empty;
+        public string LogoUrl { get; set; } = string.Empty;
     }
 }

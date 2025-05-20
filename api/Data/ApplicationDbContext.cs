@@ -23,7 +23,7 @@ namespace api.Data
 
             modelBuilder.Entity<User>()
                 .HasOne(u => u.Company)
-                .WithMany()
+                .WithMany(c => c.Users)
                 .HasForeignKey(u => u.CompanyId)
                 .OnDelete(DeleteBehavior.Cascade);
         }
