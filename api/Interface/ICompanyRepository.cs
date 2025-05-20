@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using api.Dto;
 using api.Models;
 
 namespace api.Interface
@@ -12,5 +13,8 @@ namespace api.Interface
         Task<bool> UserExistsAsync(string username, string email);
         Task<Company> AddCompanyAsync(Company company);
         Task<User> AddUserAsync(User user);
+        Task<String?> SaveLogoAsync(IFormFile? logo);
+        Task<Company?> UpdateCompanyAsync(int id, CompanyUpdateDto dto);
+        Task<Company?> GetByIdAsync(int id);
     }
 }

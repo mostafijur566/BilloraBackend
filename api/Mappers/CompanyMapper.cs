@@ -4,7 +4,7 @@ using api.Models;
 
 namespace api.Mappers
 {
-    public static class CompanyRegistrationMapper
+    public static class CompanyMapper
     {
         public static Company ToCompany(this CompanyRegisterDto dto)
         {
@@ -35,6 +35,18 @@ namespace api.Mappers
                 IsActive = true,
                 CreatedAt = DateTime.UtcNow,
                 UpdatedAt = DateTime.UtcNow
+            };
+        }
+
+        public static CompanyUpdateDto ToCompanyUpdate(this Company company)
+        {
+            return new CompanyUpdateDto
+            {
+                BusinessName = company.BusinessName,
+                ContactName = company.ContactName,
+                Email = company.Email,
+                Phone = company.Phone,
+                Address = company.Address,
             };
         }
     }

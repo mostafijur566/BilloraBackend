@@ -11,15 +11,15 @@ using api.Service;
 
 namespace api.Controllers
 {
-    [Route("api/company/registration")]
+    [Route("api/company")]
     [ApiController]
-    public class CompanyRegistrationController : ControllerBase
+    public class CompanyController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
         private readonly ICompanyRepository _companRepository;
         private readonly JwtService _jwtService;
 
-        public CompanyRegistrationController(
+        public CompanyController(
             ApplicationDbContext context,
             ICompanyRepository companyRepository,
             JwtService jwtService
@@ -30,7 +30,7 @@ namespace api.Controllers
             _jwtService = jwtService;
         }
 
-        [HttpPost]
+        [HttpPost("registration")]
         [Consumes("multipart/form-data")]
         public async Task<IActionResult> RegisterOwner([FromForm] CompanyRegisterDto dto)
         {
@@ -45,23 +45,7 @@ namespace api.Controllers
                 return BadRequest(new ErrorResponse(400, "A user with the same username or email already exists."));
 
             // Save logo if present
-            string? logoUrl = null;
-            if (dto.Logo != null)
-            {
-                var uploadsDir = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "logos");
-                if (!Directory.Exists(uploadsDir))
-                    Directory.CreateDirectory(uploadsDir);
-
-                var fileName = $"{Guid.NewGuid()}{Path.GetExtension(dto.Logo.FileName)}";
-                var filePath = Path.Combine(uploadsDir, fileName);
-
-                using (var stream = new FileStream(filePath, FileMode.Create))
-                {
-                    await dto.Logo.CopyToAsync(stream);
-                }
-
-                logoUrl = $"/ logos /{fileName}";
-            }
+            var logoUrl = await _companRepository.SaveLogoAsync(dto.Logo);
 
             // Create company
             var company = dto.ToCompany();
@@ -82,6 +66,34 @@ namespace api.Controllers
                 user = new { user.Id, user.Username, user.Email, user.Role },
                 token = token,
             });
+        }
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetById([FromRoute] int id)
+        {
+            var company = await _companRepository.GetByIdAsync(id);
+
+            if (company == null)
+            {
+                return BadRequest(new ErrorResponse(400, "Company not exist"));
+            }
+
+            return Ok(company);
+        }
+
+        [HttpPut("{id}")]
+        [Consumes("multipart/form-data")]
+        public async Task<IActionResult> Update([FromRoute] int id,[FromForm] CompanyUpdateDto dto)
+        {
+            var company = await _companRepository.UpdateCompanyAsync(id, dto);
+
+            if (company == null)
+            {
+                return BadRequest(new ErrorResponse(400, "Company not exist"));
+            }
+
+            company.UpdatedAt = DateTime.UtcNow;
+
+            return Ok(company.ToCompanyUpdate());
         }
     }
 }
