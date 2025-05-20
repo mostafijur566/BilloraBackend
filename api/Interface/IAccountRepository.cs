@@ -12,5 +12,6 @@ namespace api.Interface
         Task<User?> GetUserByEmailAsync(string email);
         Task<User?> GetUserByUsernameAsync(string username);
         Task<User> CreateUserAsync(User user);
+        Task<Company?> CompanyExistsAsync(int id);
     }
 }

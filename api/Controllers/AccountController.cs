@@ -52,6 +52,11 @@ namespace api.Controllers
                     Email = user.Email,
                     Role = user.Role
                 },
+                company = user.Company == null ? null : new CompanyDto
+                {
+                    Id = user.Company.Id,
+                    Name = user.Company.BusinessName         
+                },
                 token = token
             });
         }
@@ -69,6 +74,12 @@ namespace api.Controllers
             if (existingUser != null)
             {
                 return BadRequest(new ErrorResponse(400, "Username already exists."));
+            }
+
+            var companyExists = await _accountRepository.CompanyExistsAsync(registrationDto.CompanyId);
+            if (companyExists == null)
+            {
+                return BadRequest(new ErrorResponse(400, "Company does not exist."));
             }
 
             var hashedPassword = BCrypt.Net.BCrypt.HashPassword(registrationDto.Password);

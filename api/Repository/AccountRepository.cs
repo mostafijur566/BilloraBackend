@@ -17,6 +17,11 @@ namespace api.Repository
             _context = context;
         }
 
+        public async Task<Company?> CompanyExistsAsync(int id)
+        {
+            return await _context.Companies.FirstOrDefaultAsync(c => c.Id == id);
+        }
+
         public async Task<User> CreateUserAsync(User user)
         {
             await _context.Users.AddAsync(user);
@@ -36,7 +41,9 @@ namespace api.Repository
 
         public async Task<User?> GetUserByUsernameOrEmailAsync(string usernameOrEmail)
         {
-            return await _context.Users.FirstOrDefaultAsync(u => u.Username == usernameOrEmail || u.Email == usernameOrEmail);
+            return await _context.Users
+            .Include(u => u.Company)
+            .FirstOrDefaultAsync(u => u.Username == usernameOrEmail || u.Email == usernameOrEmail);
         }
     }
 }
