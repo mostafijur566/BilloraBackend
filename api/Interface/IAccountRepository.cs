@@ -9,5 +9,8 @@ namespace api.Interface
     public interface IAccountRepository
     {
         Task<User?> GetUserByUsernameOrEmailAsync(string usernameOrEmail);
+        Task<User?> GetUserByEmailAsync(string email);
+        Task<User?> GetUserByUsernameAsync(string username);
+        Task<User> CreateUserAsync(User user);
     }
 }

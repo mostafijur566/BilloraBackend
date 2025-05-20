@@ -18,14 +18,14 @@ namespace api.Repository
         }
         public async Task<Company> AddCompanyAsync(Company company)
         {
-            _context.Companies.Add(company);
+            await _context.Companies.AddAsync(company);
             await _context.SaveChangesAsync();
             return company;
         }
 
         public async Task<User> AddUserAsync(User user)
         {
-            _context.Users.Add(user);
+            await _context.Users.AddAsync(user);
             await _context.SaveChangesAsync();
             return user;
         }
