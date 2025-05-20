@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using api.Mappers;
 using api.Response;
+using api.Service;
 
 namespace api.Controllers
 {
@@ -16,11 +17,17 @@ namespace api.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly ICompanyRepository _companRepository;
+        private readonly JwtService _jwtService;
 
-        public CompanyRegistrationController(ApplicationDbContext context, ICompanyRepository companyRepository)
+        public CompanyRegistrationController(
+            ApplicationDbContext context,
+            ICompanyRepository companyRepository,
+            JwtService jwtService
+            )
         {
             _context = context;
             _companRepository = companyRepository;
+            _jwtService = jwtService;
         }
 
         [HttpPost]
@@ -44,11 +51,15 @@ namespace api.Controllers
             var user = dto.ToOwnerUser(company.Id);
             user = await _companRepository.AddUserAsync(user);
 
+            // Generating token
+            var token = _jwtService.GenerateToken(user);
+
             return Ok(new
             {
                 message = "Company and owner registered successfully",
                 company = new { company.Id, company.BusinessName, company.Email },
-                user = new { user.Id, user.Username, user.Email, user.Role }
+                user = new { user.Id, user.Username, user.Email, user.Role },
+                token = token,
             });
         }
     }
