@@ -102,7 +102,7 @@ namespace api.Controllers
             return Ok(user.ToUserDto());
         }
 
-        [HttpPatch("change-status/{id}")]
+        [HttpPatch("change-status/{id:int}")]
         [Authorize]
         public async Task<IActionResult> ChangeUserStatus([FromRoute] int id, [FromBody] ChangeUserStatusDto dto)
         {
@@ -121,7 +121,7 @@ namespace api.Controllers
             return Ok(user.ToUserDto());
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("{id:int}")]
         [Authorize]
         public async Task<IActionResult> DeleteUserAccount([FromRoute] int id)
         {
