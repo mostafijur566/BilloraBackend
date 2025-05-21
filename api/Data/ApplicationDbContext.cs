@@ -34,6 +34,19 @@ namespace api.Data
                 .WithMany(u => u.Customers)
                 .HasForeignKey(c => c.UserId)
                 .OnDelete(DeleteBehavior.Cascade);
+
+            // Unique constraints
+            modelBuilder.Entity<Customer>()
+                .HasIndex(c => c.Phone)
+                .IsUnique();
+
+            modelBuilder.Entity<User>()
+                .HasIndex(u => u.Email)
+                .IsUnique();
+
+            modelBuilder.Entity<User>()
+                .HasIndex(u => u.Username)
+                .IsUnique();
         }
 
     }
