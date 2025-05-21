@@ -94,7 +94,7 @@ namespace api.Dto.Customer
             return CreatedAtAction(nameof(GetCustomerById), new { id = customerModel.Id }, customerModel.ToCustomerDto());
         }
 
-        [HttpPut("{id}")]
+        [HttpPut("{id:int}")]
         [Authorize]
         public async Task<IActionResult> UpdateCustomer([FromRoute] int id, [FromBody] UpdateCustomerDto updateDto)
         {
@@ -109,6 +109,20 @@ namespace api.Dto.Customer
             }
 
             return Ok(customer.ToCustomerDto());
+        }
+
+        [HttpDelete("{id:int}")]
+        [Authorize]
+        public async Task<IActionResult> DeleteCustomer([FromRoute] int id)
+        {
+            var customer = await _customerRepo.DeleteCustomerAsync(id);
+
+            if (customer == null)
+            {
+                return NotFound(new ErrorResponse(404, "Customer don't exists."));
+            }
+
+            return NoContent();
         }
     }
 }

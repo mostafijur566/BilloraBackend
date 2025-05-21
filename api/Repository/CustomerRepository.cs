@@ -23,6 +23,21 @@ namespace api.Repository
             return customerModel;
         }
 
+        public async Task<Customer?> DeleteCustomerAsync(int id)
+        {
+            var customer = await _context.Customers.FirstOrDefaultAsync(c => c.Id == id);
+
+            if (customer == null)
+            {
+                return null;
+            }
+
+            _context.Customers.Remove(customer);
+            await _context.SaveChangesAsync();
+
+            return customer;
+        }
+
         public async Task<List<Customer>?> GetAllCustomerAsync(int companyId)
         {
             return await _context.Customers

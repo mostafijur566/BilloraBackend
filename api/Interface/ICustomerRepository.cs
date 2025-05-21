@@ -13,5 +13,6 @@ namespace api.Interface
         Task<Customer?> GetCustomerByPhoneAsync(int companyId, string phone);
         Task<List<Customer>?> GetAllCustomerAsync(int companyId);
         Task<Customer?> UpdateCustomerAsync(int id, Customer customerModel);
+        Task<Customer?> DeleteCustomerAsync(int id);
     }
 }
