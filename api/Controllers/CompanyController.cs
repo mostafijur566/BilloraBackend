@@ -9,6 +9,7 @@ using api.Mappers;
 using api.Response;
 using api.Service;
 using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
 
 namespace api.Controllers
 {
@@ -123,10 +124,17 @@ namespace api.Controllers
         {
 
             var companyIdClaim = User.FindFirst("companyId")?.Value;
+            var role = User.FindFirst(ClaimTypes.Role)?.Value;
 
             if (string.IsNullOrEmpty(companyIdClaim) || !int.TryParse(companyIdClaim, out var companyId))
             {
                 return Unauthorized(new ErrorResponse(401, "Invalid token or missing company info"));
+            }
+
+            // Rule: Only owner can delete company
+            if (role != "Owner")
+            {
+                return StatusCode(403, new ErrorResponse(403, "Only the Owner can delete the company"));
             }
 
             // Fetch company first to get logo path

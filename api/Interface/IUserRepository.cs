@@ -13,5 +13,6 @@ namespace api.Interface
         Task<List<User>?> GetAllUserAsync(int companyId, int userId);
         Task<User?> GetUserBydIdAsync(int id);
         Task<User?> ChangeUserStatusAsync(int id, User userModel);
+        Task<DeleteUserResultDto> DeleteUserAsync(int id, string currentUserRole);
     }
 }

@@ -26,16 +26,52 @@ namespace api.Repository
                 return null;
             }
 
-            // ✅ Log before update
-            Console.WriteLine($"[BEFORE] DB IsActive: {existingUser.IsActive}");
-
             existingUser.IsActive = userModel.IsActive;
-
-            // ✅ Log after update
-            Console.WriteLine($"[AFTER] Updated IsActive: {existingUser.IsActive}");
 
             await _context.SaveChangesAsync();
             return existingUser;
+        }
+
+        public async Task<DeleteUserResultDto> DeleteUserAsync(int id, string currentUserRole)
+        {
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == id);
+
+            if (user == null)
+            {
+                return new DeleteUserResultDto
+                {
+                    Success = false,
+                    ErrorMessage = "User not found"
+                };
+            }
+
+            // Rule: Owner can delete Admins, but Admin cannot delete Owner or Admin
+            if (user.Role == "Owner")
+            {
+                return new DeleteUserResultDto
+                {
+                    Success = false,
+                    ErrorMessage = "Cannot delete Owner user"
+                };
+            }
+            // Rule: Only Owner can delete Admin users
+            if (user.Role == "Admin" && currentUserRole != "Owner")
+            {
+                return new DeleteUserResultDto
+                {
+                    Success = false,
+                    ErrorMessage = "You don't have permission to delete this Admin user"
+                };
+            }
+
+            _context.Users.Remove(user);
+            await _context.SaveChangesAsync();
+
+            return new DeleteUserResultDto
+            {
+                Success = true,
+                DeletedUser = user
+            };
         }
 
         public async Task<List<User>?> GetAllUserAsync(int companyId, int userId)

@@ -110,7 +110,7 @@ namespace api.Controllers
             {
                 return BadRequest(ModelState);
             }
-    
+
             var user = await _userRepo.ChangeUserStatusAsync(id, dto.ToUserChangeStatus());
 
             if (user == null)
@@ -118,9 +118,28 @@ namespace api.Controllers
                 return NotFound("User not found");
             }
 
-
-
             return Ok(user.ToUserDto());
+        }
+
+        [HttpDelete("{id}")]
+        [Authorize]
+        public async Task<IActionResult> DeleteUserAccount([FromRoute] int id)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var currentUserRole = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role)?.Value;
+
+            var result = await _userRepo.DeleteUserAsync(id, currentUserRole!);
+
+            if (!result.Success)
+            {
+                return StatusCode(403, new ErrorResponse(403, result.ErrorMessage!));
+            }
+
+            return NoContent();
         }
     }
 }
