@@ -101,5 +101,26 @@ namespace api.Controllers
 
             return Ok(user.ToUserDto());
         }
+
+        [HttpPatch("change-status/{id}")]
+        [Authorize]
+        public async Task<IActionResult> ChangeUserStatus([FromRoute] int id, [FromBody] ChangeUserStatusDto dto)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+    
+            var user = await _userRepo.ChangeUserStatusAsync(id, dto.ToUserChangeStatus());
+
+            if (user == null)
+            {
+                return NotFound("User not found");
+            }
+
+
+
+            return Ok(user.ToUserDto());
+        }
     }
 }

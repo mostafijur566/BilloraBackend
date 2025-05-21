@@ -11,5 +11,7 @@ namespace api.Interface
         Task<User?> GetUserAsync(int id);
         Task<User?> UpdateAsync(int id, User userModel);
         Task<List<User>?> GetAllUserAsync(int companyId, int userId);
+        Task<User?> GetUserBydIdAsync(int id);
+        Task<User?> ChangeUserStatusAsync(int id, User userModel);
     }
 }

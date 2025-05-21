@@ -20,6 +20,7 @@ namespace api.Mappers
                 Phone = user.Phone,
                 Role = user.Role,
                 CompanyId = user.CompanyId,
+                IsActive = user.IsActive
             };
         }
 
@@ -30,6 +31,14 @@ namespace api.Mappers
                 Email = userDto.Email,
                 Fullname = userDto.Fullname,
                 Phone = userDto.Phone,
+            };
+        }
+        
+         public static User ToUserChangeStatus(this ChangeUserStatusDto user)
+        {
+            return new User
+            {
+                IsActive = user.IsActive
             };
         }
     }
