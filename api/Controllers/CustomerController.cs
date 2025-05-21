@@ -93,5 +93,22 @@ namespace api.Dto.Customer
 
             return CreatedAtAction(nameof(GetCustomerById), new { id = customerModel.Id }, customerModel.ToCustomerDto());
         }
+
+        [HttpPut("{id}")]
+        [Authorize]
+        public async Task<IActionResult> UpdateCustomer([FromRoute] int id, [FromBody] UpdateCustomerDto updateDto)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var customer = await _customerRepo.UpdateCustomerAsync(id, updateDto.ToCustomerFromUpdate());
+
+            if (customer == null)
+            {
+                return NotFound(new ErrorResponse(404, "Customer don't exists."));
+            }
+
+            return Ok(customer.ToCustomerDto());
+        }
     }
 }

@@ -51,5 +51,27 @@ namespace api.Repository
                     c.Phone.Trim() == phone.Trim() &&
                     c.User != null && c.User.CompanyId == companyId);
         }
+
+        public async Task<Customer?> UpdateCustomerAsync(int id, Customer customerModel)
+        {
+            var existingCustomer = await _context.Customers.FirstOrDefaultAsync(c => c.Id == id);
+
+            if (existingCustomer == null)
+            {
+                return null;
+            }
+
+            existingCustomer.Name = customerModel.Name;
+            existingCustomer.Email = customerModel.Email;
+            existingCustomer.Phone = customerModel.Phone;
+            existingCustomer.Address = customerModel.Address;
+            existingCustomer.ContactPerson = customerModel.ContactPerson;
+
+            existingCustomer.UpdatedAt = DateTime.UtcNow;
+
+            await _context.SaveChangesAsync();
+
+            return existingCustomer;
+        }
     }
 }

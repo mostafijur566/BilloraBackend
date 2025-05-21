@@ -19,7 +19,9 @@ namespace api.Mappers
                 Email = customerModel.Email,
                 Phone = customerModel.Phone,
                 Address = customerModel.Address,
-                ContactPerson = customerModel.ContactPerson
+                ContactPerson = customerModel.ContactPerson,
+                CreatedAt = customerModel.CreatedAt,
+                UpdatedAt = customerModel.UpdatedAt
             };
         }
         public static Customer ToCustomerFromCreate(this CreateCustomerDto customerDto, int userId)
@@ -27,6 +29,18 @@ namespace api.Mappers
             return new Customer
             {
                 UserId = userId,
+                Name = customerDto.Name,
+                Email = customerDto.Email,
+                Phone = customerDto.Phone,
+                Address = customerDto.Address,
+                ContactPerson = customerDto.ContactPerson
+            };
+        }
+
+        public static Customer ToCustomerFromUpdate(this UpdateCustomerDto customerDto)
+        {
+            return new Customer
+            {
                 Name = customerDto.Name,
                 Email = customerDto.Email,
                 Phone = customerDto.Phone,
