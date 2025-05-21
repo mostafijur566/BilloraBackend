@@ -88,13 +88,13 @@ namespace api.Controllers
             var existingUser = await _accountRepository.GetUserByEmailAsync(registrationDto.Email);
             if (existingUser != null)
             {
-                return BadRequest(new ErrorResponse(400, "Email already exists."));
+                return Conflict(new ErrorResponse(409, "Email already exists."));
             }
 
             existingUser = await _accountRepository.GetUserByUsernameAsync(registrationDto.Username);
             if (existingUser != null)
             {
-                return BadRequest(new ErrorResponse(400, "Username already exists."));
+                return Conflict(new ErrorResponse(409, "Username already exists."));
             }
 
             var companyExists = await _accountRepository.CompanyExistsAsync(companyId);

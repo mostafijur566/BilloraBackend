@@ -34,5 +34,17 @@ namespace api.Repository
 
             return customer;
         }
+
+        public async Task<Customer?> GetCustomerByPhoneAsync(string phone)
+        {
+            var customer = await _context.Customers.FirstOrDefaultAsync(c => c.Phone.Trim() == phone.Trim());
+
+            if (customer == null)
+            {
+                return null;
+            }
+
+            return customer;
+        }
     }
 }

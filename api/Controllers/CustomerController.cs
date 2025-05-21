@@ -51,6 +51,12 @@ namespace api.Dto.Customer
                 return Unauthorized(new ErrorResponse(401, "Invalid user token."));
             }
 
+            var existingCustomer = await _customerRepo.GetCustomerByPhoneAsync(customerDto.Phone);
+            if (existingCustomer != null)
+            {
+                return Conflict(new ErrorResponse(409, "Phone number already exists"));
+            }
+
             var customerModel = customerDto.ToCustomerFromCreate(userId);
             await _customerRepo.CreateCustomerAsync(customerModel);
 
