@@ -5,6 +5,10 @@
       "PackagePath": "staticwebassets\\logos\\2de94d31-5f6b-419a-b546-f769a480dad9.png"
     },
     {
+      "Id": "D:\\ASP\\BilloraBackend\\api\\wwwroot\\logos\\c95e0063-f66b-4b6e-b083-25ae4ded9da1.png",
+      "PackagePath": "staticwebassets\\logos\\c95e0063-f66b-4b6e-b083-25ae4ded9da1.png"
+    },
+    {
       "Id": "obj\\Debug\\net9.0\\staticwebassets\\msbuild.api.Microsoft.AspNetCore.StaticWebAssetEndpoints.props",
       "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssetEndpoints.props"
     },

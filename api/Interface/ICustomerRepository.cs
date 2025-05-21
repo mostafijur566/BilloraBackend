@@ -10,6 +10,7 @@ namespace api.Interface
     {
         Task<Customer> CreateCustomerAsync(Customer customerModel);
         Task<Customer?> GetCustomerByIdAsync(int id);
-        Task<Customer?> GetCustomerByPhoneAsync(string phone);
+        Task<Customer?> GetCustomerByPhoneAsync(int companyId, string phone);
+        Task<List<Customer>?> GetAllCustomerAsync(int companyId);
     }
 }

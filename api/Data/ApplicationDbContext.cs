@@ -36,10 +36,6 @@ namespace api.Data
                 .OnDelete(DeleteBehavior.Cascade);
 
             // Unique constraints
-            modelBuilder.Entity<Customer>()
-                .HasIndex(c => c.Phone)
-                .IsUnique();
-
             modelBuilder.Entity<User>()
                 .HasIndex(u => u.Email)
                 .IsUnique();

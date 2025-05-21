@@ -21,6 +21,31 @@ namespace api.Dto.Customer
             _customerRepo = customerRepo;
         }
 
+        [HttpGet]
+        [Authorize]
+        public async Task<IActionResult> GetAllCustomer()
+        {
+            // Extract companyId from the JWT claims
+            var companyIdClaim = User.FindFirst("companyId")?.Value;
+            if (string.IsNullOrEmpty(companyIdClaim) || !int.TryParse(companyIdClaim, out int companyId))
+            {
+                return Unauthorized(new ErrorResponse(401, "Invalid token or missing company info"));
+            }
+
+            // Fetch customers where their user's company ID matches
+            var customers = await _customerRepo.GetAllCustomerAsync(companyId);
+
+            if (customers == null)
+            {
+                return Ok(Enumerable.Empty<CustomerDto>());
+            }
+
+            // Optionally, map to DTOs
+            var customerDtos = customers.Select(c => c.ToCustomerDto());
+
+            return Ok(customerDtos);
+        }
+
         [HttpGet("{id:int}")]
         [Authorize]
         public async Task<IActionResult> GetCustomerById([FromRoute] int id)
@@ -51,7 +76,13 @@ namespace api.Dto.Customer
                 return Unauthorized(new ErrorResponse(401, "Invalid user token."));
             }
 
-            var existingCustomer = await _customerRepo.GetCustomerByPhoneAsync(customerDto.Phone);
+            var companyIdClaim = User.FindFirst("companyId")?.Value;
+            if (string.IsNullOrEmpty(companyIdClaim) || !int.TryParse(companyIdClaim, out int companyId))
+            {
+                return Unauthorized(new ErrorResponse(401, "Invalid token or missing company info"));
+            }
+
+            var existingCustomer = await _customerRepo.GetCustomerByPhoneAsync(companyId, customerDto.Phone);
             if (existingCustomer != null)
             {
                 return Conflict(new ErrorResponse(409, "Phone number already exists"));

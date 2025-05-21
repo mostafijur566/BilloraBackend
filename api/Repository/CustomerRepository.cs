@@ -23,6 +23,14 @@ namespace api.Repository
             return customerModel;
         }
 
+        public async Task<List<Customer>?> GetAllCustomerAsync(int companyId)
+        {
+            return await _context.Customers
+                .Include(c => c.User)
+                .Where(c => c.User != null && c.User.CompanyId == companyId)
+                .ToListAsync();
+        }
+
         public async Task<Customer?> GetCustomerByIdAsync(int id)
         {
             var customer = await _context.Customers.FirstOrDefaultAsync(c => c.Id == id);
@@ -35,16 +43,13 @@ namespace api.Repository
             return customer;
         }
 
-        public async Task<Customer?> GetCustomerByPhoneAsync(string phone)
+        public async Task<Customer?> GetCustomerByPhoneAsync(int companyId, string phone)
         {
-            var customer = await _context.Customers.FirstOrDefaultAsync(c => c.Phone.Trim() == phone.Trim());
-
-            if (customer == null)
-            {
-                return null;
-            }
-
-            return customer;
+            return await _context.Customers
+                .Include(c => c.User)
+                .FirstOrDefaultAsync(c =>
+                    c.Phone.Trim() == phone.Trim() &&
+                    c.User != null && c.User.CompanyId == companyId);
         }
     }
 }
