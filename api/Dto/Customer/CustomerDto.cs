@@ -1,12 +1,11 @@
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace api.Models
+namespace api.Dto.Customer
 {
-    public class Customer
+    public class CustomerDto
     {
         public int Id { get; set; }
         public int UserId { get; set; }
@@ -17,9 +16,5 @@ namespace api.Models
         public string? ContactPerson { get; set; }
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
-        
-        // Navigation property
-        [ForeignKey("UserId")]
-        public User? User { get; set; }
     }
 }
