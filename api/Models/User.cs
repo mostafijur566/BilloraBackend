@@ -25,5 +25,7 @@ namespace api.Models
         // Navigation property
         [ForeignKey("CompanyId")]
         public Company? Company { get; set; }
+        public ICollection<Customer> Customers { get; set; } = new List<Customer>();
+
     }
 }
