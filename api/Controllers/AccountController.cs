@@ -20,18 +20,15 @@ namespace api.Controllers
         private readonly IAccountRepository _accountRepository;
         private readonly JwtService _jwtService;
         private readonly IEmailService _emailService;
-        private readonly ApplicationDbContext _context;
         public AccountController(
             IAccountRepository accountRepository,
             JwtService jwtService,
-            IEmailService emailService,
-            ApplicationDbContext context
+            IEmailService emailService
             )
         {
             _accountRepository = accountRepository;
             _jwtService = jwtService;
             _emailService = emailService;
-            _context = context;
         }
 
         [HttpPost("login")]
