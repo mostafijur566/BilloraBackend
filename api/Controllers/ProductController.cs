@@ -66,7 +66,7 @@ namespace api.Controllers
                 return NotFound(new ErrorResponse(404, "Product doesn't exist."));
             }
 
-            return Ok(product.ToProductDto());
+            return CreatedAtAction(nameof(GetProductById), new { id = product.Id }, product.ToProductDto());
         }
 
         [HttpPost]
@@ -107,13 +107,6 @@ namespace api.Controllers
                 return Unauthorized(new ErrorResponse(401, "Invalid token or missing company info"));
             }
 
-            // Get user id from claims
-            var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            if (string.IsNullOrEmpty(userIdClaim) || !int.TryParse(userIdClaim, out int userId))
-            {
-                return Unauthorized(new ErrorResponse(401, "Invalid user token."));
-            }
-
             // Update product
             var product = await _productRepo.UpdateProductAsync(id, companyId, updateProductDto.ToProductFromUpdate());
 
@@ -123,6 +116,28 @@ namespace api.Controllers
             }
 
             return Ok(product.ToProductDto());
+        }
+
+        [HttpDelete("{id:int}")]
+        [Authorize]
+        public async Task<IActionResult> DeleteProduct([FromRoute] int id)
+        {
+            // Extract companyId from the JWT claims
+            var companyIdClaim = User.FindFirst("companyId")?.Value;
+            if (string.IsNullOrEmpty(companyIdClaim) || !int.TryParse(companyIdClaim, out int companyId))
+            {
+                return Unauthorized(new ErrorResponse(401, "Invalid token or missing company info"));
+            }
+
+            // Delete product
+            var product = await _productRepo.DeleteProductAsync(id, companyId);
+
+            if (product == null)
+            {
+                return NotFound(new ErrorResponse(404, "Product don't exists."));
+            }
+
+            return NoContent();
         }
     }
 }

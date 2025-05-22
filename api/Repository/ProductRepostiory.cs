@@ -24,6 +24,24 @@ namespace api.Repository
             return productModel;
         }
 
+        public async Task<Product?> DeleteProductAsync(int productId, int companyId)
+        {
+            var product = await _context.Products
+                .Include(p => p.User)
+                .FirstOrDefaultAsync(p => p.User != null &&
+                    p.User.CompanyId == companyId && p.Id == productId
+                );
+
+            if (product == null)
+            {
+                return null;
+            }
+            _context.Products.Remove(product);
+            await _context.SaveChangesAsync();
+
+            return product;
+        }
+
         public async Task<List<Product>?> GetAllProductAsync(int companyId)
         {
             return await _context.Products

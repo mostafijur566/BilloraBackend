@@ -12,5 +12,6 @@ namespace api.Interface
         Task<Product?> GetProductByIdAsync(int productId, int companyId);
         Task<Product> CreateProductAsync(Product productModel);
         Task<Product?> UpdateProductAsync(int productId, int companyId, Product productModel);
+        Task<Product?> DeleteProductAsync(int productId, int companyId);
     }
 }
