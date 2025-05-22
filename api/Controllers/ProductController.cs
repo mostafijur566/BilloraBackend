@@ -6,6 +6,7 @@ using api.Dto.Product;
 using api.Interface;
 using api.Mappers;
 using api.Response;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace api.Controllers
@@ -21,6 +22,7 @@ namespace api.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public async Task<IActionResult> GetAllProduct()
         {
             // Extract companyId from the JWT claims
@@ -44,7 +46,8 @@ namespace api.Controllers
             return Ok(productDtos);
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("{id:int}")]
+        [Authorize]
         public async Task<IActionResult> GetProductById([FromRoute] int id)
         {
             // Extract companyId from the JWT claims
