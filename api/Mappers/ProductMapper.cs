@@ -9,7 +9,8 @@ namespace api.Mappers
 {
     public static class ProductMapper
     {
-        public static ProductDto ToProductDto(this Product product) {
+        public static ProductDto ToProductDto(this Product product)
+        {
             return new ProductDto
             {
                 Id = product.Id,
@@ -22,6 +23,20 @@ namespace api.Mappers
                 TaxRate = product.TaxRate,
                 CreatedAt = product.CreatedAt,
                 UpdatedAt = product.UpdatedAt
+            };
+        }
+
+        public static Product ToProductFromCreate(this CreateProductDto createProductDto, int userId)
+        {
+            return new Product
+            {
+                UserId = userId,
+                Name = createProductDto.Name,
+                Description = createProductDto.Description,
+                Sku = createProductDto.Sku,
+                UnitPrice = createProductDto.UnitPrice,
+                Unit = createProductDto.Unit,
+                TaxRate = createProductDto.TaxRate
             };
         }
     }

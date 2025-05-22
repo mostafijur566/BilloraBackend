@@ -10,5 +10,6 @@ namespace api.Interface
     {
         Task<List<Product>?> GetAllProductAsync(int companyId);
         Task<Product?> GetProductByIdAsync(int productId, int companyId);
+        Task<Product> CreateProductAsync(Product productModel);
     }
 }

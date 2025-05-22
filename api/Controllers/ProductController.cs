@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using api.Dto.Product;
 using api.Interface;
@@ -66,6 +67,28 @@ namespace api.Controllers
             }
 
             return Ok(product.ToProductDto());
+        }
+
+        [HttpPost]
+        [Authorize]
+        public async Task<IActionResult> CreateProduct([FromBody] CreateProductDto productDto)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            // Get user id from claims
+            var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (string.IsNullOrEmpty(userIdClaim) || !int.TryParse(userIdClaim, out int userId))
+            {
+                return Unauthorized(new ErrorResponse(401, "Invalid user token."));
+            }
+
+            var productModel = productDto.ToProductFromCreate(userId);
+            await _productRepo.CreateProductAsync(productModel);
+
+            return Ok(productModel.ToProductDto());
         }
     }
 }

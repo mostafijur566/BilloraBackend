@@ -16,6 +16,14 @@ namespace api.Repository
         {
             _context = context;
         }
+
+        public async Task<Product> CreateProductAsync(Product productModel)
+        {
+            await _context.Products.AddAsync(productModel);
+            await _context.SaveChangesAsync();
+            return productModel;
+        }
+
         public async Task<List<Product>?> GetAllProductAsync(int companyId)
         {
             return await _context.Products
