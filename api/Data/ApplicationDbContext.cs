@@ -17,6 +17,7 @@ namespace api.Data
         public DbSet<Company> Companies { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<Customer> Customers { get; set; }
+        public DbSet<Product> Products { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -35,6 +36,13 @@ namespace api.Data
                 .HasForeignKey(c => c.UserId)
                 .OnDelete(DeleteBehavior.Cascade);
 
+            // Product ↔ User relationship
+            modelBuilder.Entity<Product>()
+                .HasOne(p => p.User)
+                .WithMany(u => u.Products)
+                .HasForeignKey(p => p.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
+
             // Unique constraints
             modelBuilder.Entity<User>()
                 .HasIndex(u => u.Email)
@@ -43,6 +51,15 @@ namespace api.Data
             modelBuilder.Entity<User>()
                 .HasIndex(u => u.Username)
                 .IsUnique();
+
+            // Decimal Precision
+            modelBuilder.Entity<Product>()
+                .Property(p => p.UnitPrice)
+                .HasPrecision(18, 4); // total 18 digits, 4 after decimal
+
+            modelBuilder.Entity<Product>()
+                .Property(p => p.TaxRate)
+                .HasPrecision(5, 2);  // e.g., allows values like 99.99
         }
 
     }

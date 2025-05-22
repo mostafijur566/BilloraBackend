@@ -26,6 +26,6 @@ namespace api.Models
         [ForeignKey("CompanyId")]
         public Company? Company { get; set; }
         public ICollection<Customer> Customers { get; set; } = new List<Customer>();
-
+        public ICollection<Product> Products { get; set; } = new List<Product>();
     }
 }
