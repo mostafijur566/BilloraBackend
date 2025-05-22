@@ -52,14 +52,14 @@ namespace api.Data
                 .HasIndex(u => u.Username)
                 .IsUnique();
 
-            // Decimal Precision
-            modelBuilder.Entity<Product>()
-                .Property(p => p.UnitPrice)
-                .HasPrecision(18, 4); // total 18 digits, 4 after decimal
+            // // Decimal Precision
+            // modelBuilder.Entity<Product>()
+            //     .Property(p => p.UnitPrice)
+            //     .HasPrecision(18, 4); // total 18 digits, 4 after decimal
 
-            modelBuilder.Entity<Product>()
-                .Property(p => p.TaxRate)
-                .HasPrecision(5, 2);  // e.g., allows values like 99.99
+            // modelBuilder.Entity<Product>()
+            //     .Property(p => p.TaxRate)
+            //     .HasPrecision(5, 2);  // e.g., allows values like 99.99
         }
 
     }
