@@ -39,5 +39,18 @@ namespace api.Mappers
                 TaxRate = createProductDto.TaxRate
             };
         }
+
+        public static Product ToProductFromUpdate(this UpdateProductDto updateProductDto)
+        {
+            return new Product
+            {
+                Name = updateProductDto.Name,
+                Description = updateProductDto.Description,
+                Sku = updateProductDto.Sku,
+                UnitPrice = updateProductDto.UnitPrice,
+                Unit = updateProductDto.Unit,
+                TaxRate = updateProductDto.TaxRate
+            };
+        }
     }
 }

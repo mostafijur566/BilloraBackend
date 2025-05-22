@@ -42,5 +42,35 @@ namespace api.Repository
                     p.Id == productId
                 );
         }
+
+        public async Task<Product?> UpdateProductAsync(
+            int productId,
+            int companyid,
+            Product productModel
+            )
+        {
+            var existingProduct = await _context.Products
+                .Include(p => p.User)
+                .FirstOrDefaultAsync(p => p.User != null &&
+                    p.User.CompanyId == companyid &&
+                    p.Id == productId
+                );
+
+            if (existingProduct == null)
+            {
+                return null;
+            }
+
+            existingProduct.Name = productModel.Name;
+            existingProduct.Description = productModel.Description;
+            existingProduct.Sku = productModel.Sku;
+            existingProduct.UnitPrice = productModel.UnitPrice;
+            existingProduct.Unit = productModel.Unit;
+            existingProduct.TaxRate = productModel.TaxRate;
+            existingProduct.UpdatedAt = DateTime.UtcNow;
+
+            await _context.SaveChangesAsync();
+            return existingProduct;
+        }
     }
 }
