@@ -148,7 +148,7 @@ namespace api.Controllers
 
             return Ok(new
             {
-                message = "Password reset successful."
+                message = "OTP has been sent."
             });
         }
 
@@ -162,12 +162,10 @@ namespace api.Controllers
             if (user.PasswordResetOtp != request.Otp || user.OtpExpiresAt < DateTime.UtcNow)
                 return BadRequest(new ErrorResponse(400, "Invalid or expired OTP."));
 
-            user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(request.NewPassword);
+            var updatedUser = await _accountRepository.ResetPasswordAsync(user, request.NewPassword);
 
-            user.PasswordResetOtp = null;
-            user.OtpExpiresAt = null;
-
-            await _context.SaveChangesAsync();
+            if (updatedUser == null)
+                return StatusCode(500, new ErrorResponse(500, "Failed to reset password."));
 
             return Ok(new
             {

@@ -57,5 +57,17 @@ namespace api.Repository
             .Include(u => u.Company)
             .FirstOrDefaultAsync(u => u.Username == usernameOrEmail || u.Email == usernameOrEmail);
         }
+
+        public async Task<User?> ResetPasswordAsync(User user, string password)
+        {
+            user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(password);
+
+            user.PasswordResetOtp = null;
+            user.OtpExpiresAt = null;
+
+            await _context.SaveChangesAsync();
+
+            return user;
+        }
     }
 }
