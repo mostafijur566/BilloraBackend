@@ -8,6 +8,7 @@ namespace api.Interface
 {
     public interface IProductRepository
     {
-        Task<List<Product>?> GetAllProductAsyn(int companyId);
+        Task<List<Product>?> GetAllProductAsync(int companyId);
+        Task<Product?> GetProductByIdAsync(int productId, int companyId);
     }
 }

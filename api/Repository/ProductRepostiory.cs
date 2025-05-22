@@ -16,13 +16,23 @@ namespace api.Repository
         {
             _context = context;
         }
-        public async Task<List<Product>?> GetAllProductAsyn(int companyId)
+        public async Task<List<Product>?> GetAllProductAsync(int companyId)
         {
             return await _context.Products
                  .Include(p => p.User)
                  .Where(p => p.User != null && p.User.CompanyId == companyId)
                  .ToListAsync();
 
+        }
+
+        public async Task<Product?> GetProductByIdAsync(int productId, int companyId)
+        {
+            return await _context.Products
+                .Include(p => p.User)
+                .FirstOrDefaultAsync(p => p.User != null &&
+                    p.User.CompanyId == companyId &&
+                    p.Id == productId
+                );
         }
     }
 }

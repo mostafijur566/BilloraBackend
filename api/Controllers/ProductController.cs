@@ -19,6 +19,7 @@ namespace api.Controllers
         {
             _productRepo = productRepo;
         }
+
         [HttpGet]
         public async Task<IActionResult> GetAllProduct()
         {
@@ -30,7 +31,7 @@ namespace api.Controllers
             }
 
             // Fetch products where their user's company ID matches
-            var products = await _productRepo.GetAllProductAsyn(companyId);
+            var products = await _productRepo.GetAllProductAsync(companyId);
 
             if (products == null)
             {
@@ -41,6 +42,27 @@ namespace api.Controllers
             var productDtos = products.Select(c => c.ToProductDto());
 
             return Ok(productDtos);
+        }
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetProductById([FromRoute] int id)
+        {
+            // Extract companyId from the JWT claims
+            var companyIdClaim = User.FindFirst("companyId")?.Value;
+            if (string.IsNullOrEmpty(companyIdClaim) || !int.TryParse(companyIdClaim, out int companyId))
+            {
+                return Unauthorized(new ErrorResponse(401, "Invalid token or missing company info"));
+            }
+
+            // Fetch a product
+            var product = await _productRepo.GetProductByIdAsync(id, companyId);
+
+            if (product == null)
+            {
+                return NotFound(new ErrorResponse(404, "Product doesn't exist."));
+            }
+
+            return Ok(product.ToProductDto());
         }
     }
 }
