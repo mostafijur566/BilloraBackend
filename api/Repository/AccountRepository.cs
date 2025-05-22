@@ -29,6 +29,18 @@ namespace api.Repository
             return user;
         }
 
+        public async Task<bool> ForgotPasswordAsync(string email, string otp, DateTime expiresAt)
+        {
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == email);
+            if (user == null) return false;
+
+            user.PasswordResetOtp = otp;
+            user.OtpExpiresAt = expiresAt;
+
+            await _context.SaveChangesAsync();
+            return true;
+        }
+
         public async Task<User?> GetUserByEmailAsync(string email)
         {
             return await _context.Users.FirstOrDefaultAsync(u => u.Email == email);

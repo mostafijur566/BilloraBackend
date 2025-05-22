@@ -69,13 +69,13 @@ builder.Services.AddAuthentication(options =>
     };
 });
 
-
 builder.Services.AddScoped<JwtService>();
 builder.Services.AddScoped<ICompanyRepository, CompanyRepository>();
 builder.Services.AddScoped<IAccountRepository, AccountRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<ICustomerRepository, CustomerRepository>();
 builder.Services.AddScoped<IProductRepository, ProductRepostiory>();
+builder.Services.AddScoped<IEmailService, EmailService>();
 
 var app = builder.Build();
 

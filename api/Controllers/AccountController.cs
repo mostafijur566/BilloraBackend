@@ -8,6 +8,8 @@ using api.Interface;
 using api.Response;
 using api.Service;
 using Microsoft.AspNetCore.Mvc;
+using api.Dto.Account;
+using api.Data;
 
 namespace api.Controllers
 {
@@ -17,10 +19,19 @@ namespace api.Controllers
     {
         private readonly IAccountRepository _accountRepository;
         private readonly JwtService _jwtService;
-        public AccountController(IAccountRepository accountRepository, JwtService jwtService)
+        private readonly IEmailService _emailService;
+        private readonly ApplicationDbContext _context;
+        public AccountController(
+            IAccountRepository accountRepository,
+            JwtService jwtService,
+            IEmailService emailService,
+            ApplicationDbContext context
+            )
         {
             _accountRepository = accountRepository;
             _jwtService = jwtService;
+            _emailService = emailService;
+            _context = context;
         }
 
         [HttpPost("login")]
@@ -116,5 +127,53 @@ namespace api.Controllers
                 }
             );
         }
+
+        [HttpPost("forgot-password")]
+        public async Task<IActionResult> ForgotPassword([FromBody] ForgotPasswordRequestDto request)
+        {
+            var user = await _accountRepository.GetUserByEmailAsync(request.Email);
+            if (user == null)
+                return NotFound(new ErrorResponse(404, "Email not exists."));
+
+            // Generate a 6-digit OTP
+            var otp = new Random().Next(100000, 999999).ToString();
+            var expiresAt = DateTime.UtcNow.AddMinutes(10);
+
+            // Save OTP using repository method
+            var result = await _accountRepository.ForgotPasswordAsync(request.Email, otp, expiresAt);
+            if (!result)
+                return StatusCode(500, new ErrorResponse(500, "Could not generate OTP."));
+
+            await _emailService.SendEmailAsync(user.Email, "Your Password Reset OTP", $"Your OTP is: {otp}");
+
+            return Ok(new
+            {
+                message = "Password reset successful."
+            });
+        }
+
+        [HttpPost("reset-password")]
+        public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordRequestDto request)
+        {
+            var user = await _accountRepository.GetUserByEmailAsync(request.Email);
+            if (user == null)
+                return NotFound(new ErrorResponse(404, "Email not found."));
+
+            if (user.PasswordResetOtp != request.Otp || user.OtpExpiresAt < DateTime.UtcNow)
+                return BadRequest(new ErrorResponse(400, "Invalid or expired OTP."));
+
+            user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(request.NewPassword);
+
+            user.PasswordResetOtp = null;
+            user.OtpExpiresAt = null;
+
+            await _context.SaveChangesAsync();
+
+            return Ok(new
+            {
+                message = "Password reset successful."
+            });
+        }
+
     }
 }

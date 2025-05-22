@@ -13,5 +13,6 @@ namespace api.Interface
         Task<User?> GetUserByUsernameAsync(string username);
         Task<User> CreateUserAsync(User user);
         Task<Company?> CompanyExistsAsync(int id);
+        Task<bool> ForgotPasswordAsync(string email, string otp, DateTime expiresAt);
     }
 }

@@ -21,6 +21,8 @@ namespace api.Models
 
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
+        public string? PasswordResetOtp { get; set; }
+        public DateTime? OtpExpiresAt { get; set; }
 
         // Navigation property
         [ForeignKey("CompanyId")]
