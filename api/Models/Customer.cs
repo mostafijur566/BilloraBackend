@@ -17,9 +17,10 @@ namespace api.Models
         public string? ContactPerson { get; set; }
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
-        
+
         // Navigation property
         [ForeignKey("UserId")]
         public User? User { get; set; }
+        public ICollection<Quotation> Quotations { get; set; } = new List<Quotation>();
     }
 }

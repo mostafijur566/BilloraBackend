@@ -29,5 +29,6 @@ namespace api.Models
         public Company? Company { get; set; }
         public ICollection<Customer> Customers { get; set; } = new List<Customer>();
         public ICollection<Product> Products { get; set; } = new List<Product>();
+        public ICollection<Quotation> Quotations { get; set; } = new List<Quotation>();
     }
 }

@@ -18,6 +18,9 @@ namespace api.Data
         public DbSet<User> Users { get; set; }
         public DbSet<Customer> Customers { get; set; }
         public DbSet<Product> Products { get; set; }
+        public DbSet<Quotation> Quotations { get; set; }
+        public DbSet<QuotationItem> QuotationItems { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -48,9 +51,36 @@ namespace api.Data
                 .HasIndex(u => u.Email)
                 .IsUnique();
 
+
             modelBuilder.Entity<User>()
                 .HasIndex(u => u.Username)
                 .IsUnique();
+
+
+            modelBuilder.Entity<Quotation>()
+                .HasOne(q => q.User)
+                .WithMany(u => u.Quotations)
+                .HasForeignKey(q => q.UserId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Quotation>()
+                .HasOne(q => q.Customer)
+                .WithMany(c => c.Quotations)
+                .HasForeignKey(q => q.CustomerId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<QuotationItem>()
+                .HasOne(q => q.Quotation)
+                .WithMany(c => c.QuotationItems)
+                .HasForeignKey(q => q.QuotationId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<QuotationItem>()
+                .HasOne(q => q.Product)
+                .WithMany()
+                .HasForeignKey(q => q.ProductId)
+                .OnDelete(DeleteBehavior.Restrict); // or .NoAction to prevent cascade delete
+
 
             // // Decimal Precision
             // modelBuilder.Entity<Product>()
