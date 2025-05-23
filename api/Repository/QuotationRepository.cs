@@ -68,5 +68,16 @@ namespace api.Repository
 
             return result!;
         }
+
+        public async Task<List<Quotation>> GetAllQuotationAsync(int companyId)
+        {
+            return await _context.Quotations
+                .Include(q => q.User)
+                .Include(q => q.Customer)
+                .Include(q => q.QuotationItems)
+                    .ThenInclude(i => i.Product)
+                .Where(q => q.User.CompanyId == companyId)
+                .ToListAsync();
+        }
     }
 }

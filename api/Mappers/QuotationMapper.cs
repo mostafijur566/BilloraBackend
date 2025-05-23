@@ -23,6 +23,7 @@ namespace api.Mappers
                 Status = quotationModel.Status,
                 QuotationItems = quotationModel.QuotationItems.Select(q => q.ToQuotationItemDto()).ToList(),
                 User = quotationModel.User.ToUserDto(),
+                Customer = quotationModel.Customer.ToCustomerDto()
             };
         }
         public static Quotation ToQuotationFromCreateDto(this CreateQuotationDto dto, string QuotationNumber, int userId)

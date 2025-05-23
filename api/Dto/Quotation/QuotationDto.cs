@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using api.Dto.Customer;
 using api.Dto.User;
 
 namespace api.Dto.Quotation
@@ -18,5 +19,6 @@ namespace api.Dto.Quotation
         public string Status { get; set; } = string.Empty;
         public List<QuotationItemDto> QuotationItems { get; set; } = [];
         public UserDto User { get; set; }
+        public CustomerDto Customer { get; set; }
     }
 }

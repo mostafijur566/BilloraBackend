@@ -51,5 +51,26 @@ namespace api.Controllers
                 return StatusCode(500, new ErrorResponse(500, $"Failed to create quotation, error: {e.Message}"));
             }
         }
+
+        [HttpGet]
+        [Authorize]
+        public async Task<IActionResult> GetAllQuotation()
+        {
+            // Extract companyId from the JWT claims
+            var companyIdClaim = User.FindFirst("companyId")?.Value;
+            if (string.IsNullOrEmpty(companyIdClaim) || !int.TryParse(companyIdClaim, out int companyId))
+            {
+                return Unauthorized(new ErrorResponse(401, "Invalid token or missing company info"));
+            }
+
+            var quotations = await _quotationRepo.GetAllQuotationAsync(companyId);
+
+            if (quotations == null)
+            {
+                return NotFound(new ErrorResponse(404, "Not found."));
+            }
+
+            return Ok(quotations.Select(q => q.ToQuotationDto()).ToList());
+        }
     }
 }
