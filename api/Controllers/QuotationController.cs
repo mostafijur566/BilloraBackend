@@ -9,6 +9,7 @@ using api.Mappers;
 using api.Models;
 using api.Repository;
 using api.Response;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace api.Controllers
@@ -22,15 +23,16 @@ namespace api.Controllers
         {
             _quotationRepo = quotationRepo;
         }
-        
+
         [HttpPost]
+        [Authorize]
         public async Task<ActionResult<Quotation>> CreateQuotation([FromBody] CreateQuotationDto dto)
         {
             try
             {
                 if (!ModelState.IsValid)
                     return BadRequest(ModelState);
-                
+
                 // Get user id from claims
                 var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
                 if (string.IsNullOrEmpty(userIdClaim) || !int.TryParse(userIdClaim, out int userId))
@@ -39,7 +41,7 @@ namespace api.Controllers
                 }
                 var QuotationNumber = await _quotationRepo.GenerateQuotationNumberAsync();
 
-                var quotationModel  = dto.ToQuotationFromCreateDto(QuotationNumber, userId);
+                var quotationModel = dto.ToQuotationFromCreateDto(QuotationNumber, userId);
 
                 var savedQuotation = await _quotationRepo.CreateQuotationWithItemsAsync(quotationModel, dto.Items);
                 return Ok(savedQuotation.ToQuotationDto());

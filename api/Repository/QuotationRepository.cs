@@ -56,7 +56,7 @@ namespace api.Repository
                 Total = item.Total
             }).ToList();
 
-            _context.QuotationItems.AddRange(items);
+            await _context.QuotationItems.AddRangeAsync(items);
             await _context.SaveChangesAsync();
 
             var result = await _context.Quotations
