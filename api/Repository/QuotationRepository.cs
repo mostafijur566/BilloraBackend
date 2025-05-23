@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using api.Data;
 using api.Dto.Quotation;
 using api.Interface;
+using api.Mappers;
 using api.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -38,34 +39,22 @@ namespace api.Repository
             return $"QTN-BILLORA-{currentYear}-{sequence}";
         }
 
-        public async Task<Quotation> CreateQuotationWithItemsAsync(CreateQuotationDto dto)
+        public async Task<Quotation> CreateQuotationWithItemsAsync(Quotation quotationModel, List<CreateQuotationItemDto> itemDtos)
         {
-            var quotation = new Quotation
-            {
-                CustomerId = dto.CustomerId,
-                UserId = dto.UserId,
-                Date = dto.Date,
-                ValidUntil = dto.ValidUntil,
-                TotalAmount = dto.TotalAmount,
-                Status = dto.Status,
-                QuotationNumber = await GenerateQuotationNumberAsync(),
-                CreatedAt = DateTime.UtcNow,
-                UpdatedAt = DateTime.UtcNow
-            };
 
-            _context.Quotations.Add(quotation);
+            await _context.Quotations.AddAsync(quotationModel);
             await _context.SaveChangesAsync();
 
-            var items = dto.Items.Select(item => new QuotationItem
+            var items = itemDtos.Select(item => new QuotationItem
             {
-                QuotationId = quotation.Id,
+                QuotationId = quotationModel.Id,
                 ProductId = item.ProductId,
                 Quantity = item.Quantity,
                 UnitPrice = item.UnitPrice,
                 Discount = item.Discount,
                 Tax = item.Tax,
                 Total = item.Total
-            });
+            }).ToList();
 
             _context.QuotationItems.AddRange(items);
             await _context.SaveChangesAsync();
@@ -73,8 +62,9 @@ namespace api.Repository
             var result = await _context.Quotations
                 .Include(q => q.Customer)
                 .Include(q => q.User)
-                .Include(q => q.QuotationItems) // Add nav property first
-                .FirstOrDefaultAsync(q => q.Id == quotation.Id);
+                .Include(q => q.QuotationItems)
+                .ThenInclude(qi => qi.Product) // load product info inside items
+                .FirstOrDefaultAsync(q => q.Id == quotationModel.Id);
 
             return result!;
         }

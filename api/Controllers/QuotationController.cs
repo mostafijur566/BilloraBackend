@@ -1,8 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using api.Dto.Quotation;
+using api.Interface;
+using api.Mappers;
 using api.Models;
 using api.Repository;
 using api.Response;
@@ -14,18 +17,32 @@ namespace api.Controllers
     [ApiController]
     public class QuotationController : ControllerBase
     {
-        private readonly QuotationRepository _quotationRepo;
-        public QuotationController(QuotationRepository quotationRepo)
+        private readonly IQuotationRepository _quotationRepo;
+        public QuotationController(IQuotationRepository quotationRepo)
         {
             _quotationRepo = quotationRepo;
         }
+        
         [HttpPost]
         public async Task<ActionResult<Quotation>> CreateQuotation([FromBody] CreateQuotationDto dto)
         {
             try
             {
-                var quotation = await _quotationRepo.CreateQuotationWithItemsAsync(dto);
-                return Ok(quotation);
+                if (!ModelState.IsValid)
+                    return BadRequest(ModelState);
+                
+                // Get user id from claims
+                var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+                if (string.IsNullOrEmpty(userIdClaim) || !int.TryParse(userIdClaim, out int userId))
+                {
+                    return Unauthorized(new ErrorResponse(401, "Invalid user token."));
+                }
+                var QuotationNumber = await _quotationRepo.GenerateQuotationNumberAsync();
+
+                var quotationModel  = dto.ToQuotationFromCreateDto(QuotationNumber, userId);
+
+                var savedQuotation = await _quotationRepo.CreateQuotationWithItemsAsync(quotationModel, dto.Items);
+                return Ok(savedQuotation.ToQuotationDto());
             }
             catch (Exception e)
             {
