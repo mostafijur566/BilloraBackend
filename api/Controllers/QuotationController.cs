@@ -4,11 +4,13 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using api.Dto.Quotation;
+using api.Helper;
 using api.Interface;
 using api.Mappers;
 using api.Models;
 using api.Repository;
 using api.Response;
+using api.Responses;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -54,7 +56,7 @@ namespace api.Controllers
 
         [HttpGet]
         [Authorize]
-        public async Task<IActionResult> GetAllQuotation()
+        public async Task<IActionResult> GetAllQuotation([FromQuery] QuotationQueryObject query)
         {
             // Extract companyId from the JWT claims
             var companyIdClaim = User.FindFirst("companyId")?.Value;
@@ -63,14 +65,16 @@ namespace api.Controllers
                 return Unauthorized(new ErrorResponse(401, "Invalid token or missing company info"));
             }
 
-            var quotations = await _quotationRepo.GetAllQuotationAsync(companyId);
+            var quotations = await _quotationRepo.GetAllQuotationAsync(companyId, query);
 
             if (quotations == null)
             {
                 return NotFound(new ErrorResponse(404, "Not found."));
             }
 
-            return Ok(quotations.Select(q => q.ToQuotationDto()).ToList());
+            var response = new PagedResponse<QuotationDto>(quotations.Select(q => q.ToQuotationDto()).ToList(), query.PageNumber, query.PageSize);
+
+            return Ok(response);
         }
     }
 }

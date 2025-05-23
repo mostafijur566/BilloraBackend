@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using api.Data;
 using api.Dto.Quotation;
+using api.Helper;
 using api.Interface;
 using api.Mappers;
 using api.Models;
@@ -69,15 +70,60 @@ namespace api.Repository
             return result!;
         }
 
-        public async Task<List<Quotation>> GetAllQuotationAsync(int companyId)
+        public async Task<List<Quotation>?> GetAllQuotationAsync(int companyId, QuotationQueryObject query)
         {
-            return await _context.Quotations
+            var quotations = _context.Quotations
                 .Include(q => q.User)
                 .Include(q => q.Customer)
                 .Include(q => q.QuotationItems)
                     .ThenInclude(i => i.Product)
-                .Where(q => q.User.CompanyId == companyId)
-                .ToListAsync();
+                .Where(q => q.User != null && q.User.CompanyId == companyId)
+                .AsQueryable();
+                
+            // Filter by status if provided
+            if (!string.IsNullOrWhiteSpace(query.Status))
+            {
+                var status = query.Status.ToLower();
+                quotations = quotations.Where(q => q.Status.ToLower() == status);
+            }
+
+            // Filter by customerId if provided
+            if (query.CustomerId.HasValue)
+            {
+                quotations = quotations.Where(q => q.CustomerId == query.CustomerId.Value);
+            }
+
+            // Filter by UserId if proviced
+            if (query.UserId.HasValue)
+            {
+                quotations = quotations.Where(q => q.UserId == query.UserId.Value);
+            }
+
+            // SearchTerm: search by quotation number, customer name, or user name
+            if (!string.IsNullOrWhiteSpace(query.SearchTerm))
+            {
+                var term = query.SearchTerm.ToLower();
+                quotations = quotations.Where(q =>
+                q.QuotationNumber.ToLower().Contains(term) ||
+                (q.Customer != null && q.Customer.Name.ToLower().Contains(term)) ||
+                (q.User != null && q.User.Fullname.ToLower().Contains(term))
+            );
+            }
+
+            // Sorting
+            quotations = query.SortBy?.ToLower() switch
+            {
+                "date" => query.IsDescending ? quotations.OrderByDescending(q => q.Date) : quotations.OrderBy(q => q.Date),
+                "totalamount" => query.IsDescending ? quotations.OrderByDescending(q => q.TotalAmount) : quotations.OrderBy(q => q.TotalAmount),
+                "quotationnumber" => query.IsDescending ? quotations.OrderByDescending(q => q.QuotationNumber) : quotations.OrderBy(q => q.QuotationNumber),
+                "customer" => query.IsDescending ? quotations.OrderByDescending(q => q.Customer.Name) : quotations.OrderBy(q => q.Customer.Name),
+                "user" => query.IsDescending ? quotations.OrderByDescending(q => q.User.Fullname) : quotations.OrderBy(q => q.User.Fullname),
+                _ => quotations.OrderByDescending(q => q.Date)
+            };
+
+            var skipNumber = (query.PageNumber - 1) * query.PageSize;
+
+            return await quotations.Skip(skipNumber).Take(query.PageSize).ToListAsync();
         }
     }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using api.Dto.Quotation;
+using api.Helper;
 using api.Models;
 
 namespace api.Interface
@@ -13,6 +14,6 @@ namespace api.Interface
         Task<Quotation> CreateQuotationAsync(Quotation quotation);
         Task<Quotation> CreateQuotationWithItemsAsync(Quotation quotationModel, List<CreateQuotationItemDto> itemDtos);
 
-        Task<List<Quotation>?> GetAllQuotationAsync(int companyId);
+        Task<List<Quotation>?> GetAllQuotationAsync(int companyId,  QuotationQueryObject query);
     }
 }
