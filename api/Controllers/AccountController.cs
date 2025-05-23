@@ -10,6 +10,7 @@ using api.Service;
 using Microsoft.AspNetCore.Mvc;
 using api.Dto.Account;
 using api.Data;
+using Hangfire;
 
 namespace api.Controllers
 {
@@ -20,15 +21,18 @@ namespace api.Controllers
         private readonly IAccountRepository _accountRepository;
         private readonly JwtService _jwtService;
         private readonly IEmailService _emailService;
+        private readonly IBackgroundJobClient _backgroundJobClient;
         public AccountController(
             IAccountRepository accountRepository,
             JwtService jwtService,
-            IEmailService emailService
+            IEmailService emailService,
+            IBackgroundJobClient backgroundJobClient
             )
         {
             _accountRepository = accountRepository;
             _jwtService = jwtService;
             _emailService = emailService;
+            _backgroundJobClient = backgroundJobClient;
         }
 
         [HttpPost("login")]
@@ -132,6 +136,19 @@ namespace api.Controllers
             if (user == null)
                 return NotFound(new ErrorResponse(404, "Email not exists."));
 
+            // Prevent resending OTP if less than 2 minutes since last one
+            if (user.OtpExpiresAt != null && user.OtpExpiresAt > DateTime.UtcNow)
+            {
+                var lastOtpTime = user.OtpExpiresAt.Value.AddMinutes(-10); // Subtract OTP lifespan
+                var timeSinceLastOtp = DateTime.UtcNow - lastOtpTime;
+
+                if (timeSinceLastOtp.TotalSeconds < 120) // 2 minutes = 120 seconds
+                {
+                    var waitTime = 120 - (int)timeSinceLastOtp.TotalSeconds;
+                    return BadRequest(new ErrorResponse(400, $"Please wait {waitTime} seconds before requesting another OTP."));
+                }
+            }
+
             // Generate a 6-digit OTP
             var otp = new Random().Next(100000, 999999).ToString();
             var expiresAt = DateTime.UtcNow.AddMinutes(10);
@@ -141,7 +158,10 @@ namespace api.Controllers
             if (!result)
                 return StatusCode(500, new ErrorResponse(500, "Could not generate OTP."));
 
-            await _emailService.SendEmailAsync(user.Email, "Your Password Reset OTP", $"Your OTP is: {otp}");
+            // Enqueue background job to send the email
+            _backgroundJobClient.Enqueue(() =>
+                _emailService.SendEmailAsync(user.Email, "Your Password Reset OTP", $"Your OTP is: {otp}")
+            );
 
             return Ok(new
             {

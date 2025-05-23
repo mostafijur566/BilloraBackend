@@ -2,6 +2,7 @@ using api.Data;
 using api.Interface;
 using api.Repository;
 using api.Service;
+using Hangfire;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -69,6 +70,18 @@ builder.Services.AddAuthentication(options =>
     };
 });
 
+// Configure Hangfire services and SQL Server storage
+builder.Services.AddHangfire(configuration => 
+    configuration.SetDataCompatibilityLevel(CompatibilityLevel.Version_170)
+                 .UseSimpleAssemblyNameTypeSerializer()
+                 .UseRecommendedSerializerSettings()
+                 .UseSqlServerStorage(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+builder.Services.AddHangfireServer();
+
+// Register IBackgroundJobClient for dependency injection
+builder.Services.AddTransient<IBackgroundJobClient, BackgroundJobClient>();
+
 builder.Services.AddScoped<JwtService>();
 builder.Services.AddScoped<ICompanyRepository, CompanyRepository>();
 builder.Services.AddScoped<IAccountRepository, AccountRepository>();
@@ -85,6 +98,9 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+// Hangfire Dashboard
+app.UseHangfireDashboard("/hangfire");
 
 // Enable authentication/authorization
 app.UseHttpsRedirection();
