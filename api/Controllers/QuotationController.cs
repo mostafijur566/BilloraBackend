@@ -97,5 +97,30 @@ namespace api.Controllers
 
             return Ok(quotation.ToQuotationDto());
         }
+
+        [HttpPut("{id}")]
+        [Authorize]
+        public async Task<IActionResult> UpdateQuotation([FromRoute] int id, [FromBody] UpdateQuotationDto quotationDto)
+        {
+
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            // Extract companyId from the JWT claims
+            var companyIdClaim = User.FindFirst("companyId")?.Value;
+            if (string.IsNullOrEmpty(companyIdClaim) || !int.TryParse(companyIdClaim, out int companyId))
+            {
+                return Unauthorized(new ErrorResponse(401, "Invalid token or missing company info"));
+            }
+
+            var updatedQuotation = await _quotationRepo.UpdateQuotationWithItemsAsync(id, companyId, quotationDto);
+
+            if (updatedQuotation == null)
+            {
+                return NotFound(new ErrorResponse(404, "Quotation not found"));
+            }
+
+            return Ok(updatedQuotation.ToQuotationDto());
+        }
     }
 }

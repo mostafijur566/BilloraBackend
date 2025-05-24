@@ -17,6 +17,9 @@ namespace api.Dto.Quotation
         public DateTime ValidUntil { get; set; }
         public Decimal TotalAmount { get; set; }
         public string Status { get; set; } = string.Empty;
+
+        public DateTime CreatedAt { get; set; }
+        public DateTime UpdatedAt { get; set; }
         public List<QuotationItemDto> QuotationItems { get; set; } = [];
         public UserDto User { get; set; }
         public CustomerDto Customer { get; set; }

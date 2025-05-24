@@ -42,7 +42,6 @@ namespace api.Repository
 
         public async Task<Quotation> CreateQuotationWithItemsAsync(Quotation quotationModel, List<CreateQuotationItemDto> itemDtos)
         {
-
             await _context.Quotations.AddAsync(quotationModel);
             await _context.SaveChangesAsync();
 
@@ -70,6 +69,57 @@ namespace api.Repository
             return result!;
         }
 
+        public async Task<Quotation?> UpdateQuotationWithItemsAsync(int quotationId, int companyId, UpdateQuotationDto quotationDto)
+        {
+            var existingQuotation = await _context.Quotations
+                .Include(q => q.QuotationItems)
+                .Include(q => q.User)
+                .FirstOrDefaultAsync(q => q.User != null &&
+                    q.User.CompanyId == companyId &&
+                    q.Id == quotationId
+                );
+
+            if (existingQuotation == null)
+                return null;
+
+            // Update quotation fields
+            existingQuotation.CustomerId = quotationDto.CustomerId;
+            existingQuotation.Date = quotationDto.Date;
+            existingQuotation.ValidUntil = quotationDto.ValidUntil;
+            existingQuotation.TotalAmount = quotationDto.TotalAmount;
+            existingQuotation.Status = quotationDto.Status;
+            existingQuotation.UpdatedAt = DateTime.UtcNow;
+
+            // Remove old quotation items
+            _context.QuotationItems.RemoveRange(existingQuotation.QuotationItems);
+
+            // Add updated items
+            var newItems = quotationDto.Items.Select(items => new QuotationItem
+            {
+                QuotationId = existingQuotation.Id,
+                ProductId = items.ProductId,
+                Quantity = items.Quantity,
+                UnitPrice = items.UnitPrice,
+                Discount = items.Discount,
+                Tax = items.Tax,
+                Total = items.Total
+            }).ToList();
+
+            await _context.QuotationItems.AddRangeAsync(newItems);
+
+            await _context.SaveChangesAsync();
+
+            // Load full updated quotation with related entities
+            var updateQuotation = await _context.Quotations
+                .Include(q => q.Customer)
+                .Include(q => q.User)
+                .Include(q => q.QuotationItems)
+                    .ThenInclude(qi => qi.Product)
+                .FirstOrDefaultAsync(q => q.Id == quotationId);
+
+            return updateQuotation;
+        }
+
         public async Task<List<Quotation>?> GetAllQuotationAsync(int companyId, QuotationQueryObject query)
         {
             var quotations = _context.Quotations
@@ -79,7 +129,7 @@ namespace api.Repository
                     .ThenInclude(i => i.Product)
                 .Where(q => q.User != null && q.User.CompanyId == companyId)
                 .AsQueryable();
-                
+
             // Filter by status if provided
             if (!string.IsNullOrWhiteSpace(query.Status))
             {

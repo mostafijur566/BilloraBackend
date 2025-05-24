@@ -22,6 +22,8 @@ namespace api.Mappers
                 TotalAmount = quotationModel.TotalAmount,
                 Status = quotationModel.Status,
                 QuotationItems = quotationModel.QuotationItems.Select(q => q.ToQuotationItemDto()).ToList(),
+                CreatedAt = quotationModel.CreatedAt,
+                UpdatedAt = quotationModel.UpdatedAt,
                 User = quotationModel.User.ToUserDto(),
                 Customer = quotationModel.Customer.ToCustomerDto()
             };
@@ -38,6 +40,20 @@ namespace api.Mappers
                 Status = dto.Status,
                 QuotationNumber = QuotationNumber,
                 CreatedAt = DateTime.UtcNow,
+                UpdatedAt = DateTime.UtcNow
+            };
+        }
+
+        public static Quotation ToQuotationFromUpdateDto(this UpdateQuotationDto dto, int userId)
+        {
+            return new Quotation
+            {
+                CustomerId = dto.CustomerId,
+                UserId = userId,
+                Date = dto.Date,
+                ValidUntil = dto.ValidUntil,
+                TotalAmount = dto.TotalAmount,
+                Status = dto.Status,
                 UpdatedAt = DateTime.UtcNow
             };
         }

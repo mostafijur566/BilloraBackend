@@ -15,5 +15,6 @@ namespace api.Interface
         Task<Quotation> CreateQuotationWithItemsAsync(Quotation quotationModel, List<CreateQuotationItemDto> itemDtos);
         Task<List<Quotation>?> GetAllQuotationAsync(int companyId, QuotationQueryObject query);
         Task<Quotation?> GetQuotationByIdAsync(int quotationId, int companyId);
+        Task<Quotation?> UpdateQuotationWithItemsAsync(int quotationId, int companyId, UpdateQuotationDto quotationDto);
     }
 }
