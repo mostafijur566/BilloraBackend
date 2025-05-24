@@ -69,5 +69,26 @@ namespace api.Controllers
 
             return Ok(response);
         }
+
+        [HttpGet("{id}")]
+        [Authorize]
+        public async Task<IActionResult> GetInvoiceById([FromRoute] int id)
+        {
+            // Extract companyId from the JWT claims
+            var companyIdClaim = User.FindFirst("companyId")?.Value;
+            if (string.IsNullOrEmpty(companyIdClaim) || !int.TryParse(companyIdClaim, out int companyId))
+            {
+                return Unauthorized(new ErrorResponse(401, "Invalid token or missing company info"));
+            }
+
+            var invoice = await _invoiceRepo.GetInvoiceByIdAsync(id, companyId);
+
+            if (invoice == null)
+            {
+                return NotFound(new ErrorResponse(404, "Not found."));
+            }
+
+            return Ok(invoice.ToInvoiceDto());
+        }
     }
 }

@@ -112,5 +112,15 @@ namespace api.Repository
 
             return await invoices.Skip(skipNumber).Take(query.PageSize).ToListAsync();
         }
+
+        public async Task<Invoice?> GetInvoiceByIdAsync(int invoiceId, int companyId)
+        {
+            return await _context.Invoices
+                .Include(i => i.User)
+                .Include(i => i.Customer)
+                .Include(i => i.InvoiceItems)
+                    .ThenInclude(i => i.Product)
+                .FirstOrDefaultAsync(i => i.User != null && i.User.CompanyId == companyId && i.Id == invoiceId);
+        }
     }
 }
