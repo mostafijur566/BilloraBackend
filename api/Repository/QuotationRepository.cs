@@ -166,8 +166,8 @@ namespace api.Repository
                 "date" => query.IsDescending ? quotations.OrderByDescending(q => q.Date) : quotations.OrderBy(q => q.Date),
                 "totalamount" => query.IsDescending ? quotations.OrderByDescending(q => q.TotalAmount) : quotations.OrderBy(q => q.TotalAmount),
                 "quotationnumber" => query.IsDescending ? quotations.OrderByDescending(q => q.QuotationNumber) : quotations.OrderBy(q => q.QuotationNumber),
-                "customer" => query.IsDescending ? quotations.OrderByDescending(q => q.Customer.Name) : quotations.OrderBy(q => q.Customer.Name),
-                "user" => query.IsDescending ? quotations.OrderByDescending(q => q.User.Fullname) : quotations.OrderBy(q => q.User.Fullname),
+                "customer" => query.IsDescending ? quotations.OrderByDescending(q => q.Customer!.Name ?? "") : quotations.OrderBy(q => q.Customer!.Name ?? ""),
+                "user" => query.IsDescending ? quotations.OrderByDescending(q => q.User!.Fullname ?? "") : quotations.OrderBy(q => q.User!.Fullname ?? ""),
                 _ => quotations.OrderByDescending(q => q.Date)
             };
 

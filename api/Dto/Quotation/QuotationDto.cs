@@ -21,7 +21,7 @@ namespace api.Dto.Quotation
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
         public List<QuotationItemDto> QuotationItems { get; set; } = [];
-        public UserDto User { get; set; }
-        public CustomerDto Customer { get; set; }
+        public UserDto User { get; set; } = new UserDto();
+        public CustomerDto Customer { get; set; } = new CustomerDto();
     }
 }

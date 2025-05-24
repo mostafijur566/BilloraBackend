@@ -2,7 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using api.Dto.Customer;
+using api.Dto.Product;
 using api.Dto.Quotation;
+using api.Dto.User;
 using api.Models;
 
 namespace api.Mappers
@@ -24,8 +27,8 @@ namespace api.Mappers
                 QuotationItems = quotationModel.QuotationItems.Select(q => q.ToQuotationItemDto()).ToList(),
                 CreatedAt = quotationModel.CreatedAt,
                 UpdatedAt = quotationModel.UpdatedAt,
-                User = quotationModel.User.ToUserDto(),
-                Customer = quotationModel.Customer.ToCustomerDto()
+                User = quotationModel.User?.ToUserDto() ?? new UserDto(),
+                Customer = quotationModel.Customer?.ToCustomerDto() ?? new CustomerDto()
             };
         }
         public static Quotation ToQuotationFromCreateDto(this CreateQuotationDto dto, string QuotationNumber, int userId)
@@ -68,7 +71,7 @@ namespace api.Mappers
                 Discount = quotationItemModel.Discount,
                 Tax = quotationItemModel.Tax,
                 Total = quotationItemModel.Total,
-                Product = quotationItemModel.Product.ToProductDto()
+                Product = quotationItemModel.Product?.ToProductDto() ?? new ProductDto()
             };
         }
     }
