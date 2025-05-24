@@ -83,6 +83,7 @@ namespace api.Repository
             existingProduct.Description = productModel.Description;
             existingProduct.Sku = productModel.Sku;
             existingProduct.UnitPrice = productModel.UnitPrice;
+            existingProduct.MinimumSellingPrice = productModel.MinimumSellingPrice;
             existingProduct.Unit = productModel.Unit;
             existingProduct.TaxRate = productModel.TaxRate;
             existingProduct.UpdatedAt = DateTime.UtcNow;

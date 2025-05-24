@@ -13,6 +13,7 @@ namespace api.Dto.Product
         public string Description { get; set; } = string.Empty;
         public string Sku { get; set; } = string.Empty;
         public decimal UnitPrice { get; set; }
+        public decimal MinimumSellingPrice { get; set; }
         public string Unit { get; set; } = string.Empty;
         public decimal TaxRate { get; set; }
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;

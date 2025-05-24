@@ -19,6 +19,7 @@ namespace api.Mappers
                 Description = product.Description,
                 Sku = product.Sku,
                 UnitPrice = product.UnitPrice,
+                MinimumSellingPrice = product.MinimumSellingPrice,
                 Unit = product.Unit,
                 TaxRate = product.TaxRate,
                 CreatedAt = product.CreatedAt,
@@ -35,6 +36,7 @@ namespace api.Mappers
                 Description = createProductDto.Description,
                 Sku = createProductDto.Sku,
                 UnitPrice = createProductDto.UnitPrice,
+                MinimumSellingPrice = createProductDto.MinimumSellingPrice,
                 Unit = createProductDto.Unit,
                 TaxRate = createProductDto.TaxRate
             };
@@ -48,6 +50,7 @@ namespace api.Mappers
                 Description = updateProductDto.Description,
                 Sku = updateProductDto.Sku,
                 UnitPrice = updateProductDto.UnitPrice,
+                MinimumSellingPrice = updateProductDto.MinimumSellingPrice,
                 Unit = updateProductDto.Unit,
                 TaxRate = updateProductDto.TaxRate
             };

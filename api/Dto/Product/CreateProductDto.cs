@@ -25,6 +25,10 @@ namespace api.Dto.Product
         public decimal UnitPrice { get; set; }
 
         [Required]
+        [Range(0.01, 1000000, ErrorMessage = "Minimum selling price must be between 0.01 and 1,000,000.")]
+        public decimal MinimumSellingPrice { get; set; }
+
+        [Required]
         [StringLength(50, MinimumLength = 1, ErrorMessage = "Unit must be between 1 and 50 characters.")]
         public string Unit { get; set; } = string.Empty;
 
