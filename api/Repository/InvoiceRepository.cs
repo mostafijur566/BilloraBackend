@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using api.Data;
 using api.Dto.Invoice;
+using api.Helper;
 using api.Interface;
 using api.Models;
 using Microsoft.EntityFrameworkCore;
@@ -54,6 +55,62 @@ namespace api.Repository
 
             var sequence = (currentThisYear + 1).ToString("D6");
             return $"INV-BILLORA-{currentYear}-{sequence}";
+        }
+
+        public async Task<List<Invoice>?> GetAllInvoiceAsync(int companyId, InvoiceQueryObject query)
+        {
+            var invoices = _context.Invoices
+                .Include(i => i.User)
+                .Include(i => i.Customer)
+                .Include(i => i.InvoiceItems)
+                    .ThenInclude(i => i.Product)
+                .Where(i => i.User != null && i.User.CompanyId == companyId)
+                .AsQueryable();
+
+            // Filter by status if provided
+            if (!string.IsNullOrWhiteSpace(query.Status))
+            {
+                var status = query.Status.ToLower();
+                invoices = invoices.Where(i => i.Status.ToLower() == status);
+            }
+
+            // Filter by customerId if provided
+            if (query.CustomerId.HasValue)
+            {
+                invoices = invoices.Where(i => i.CustomerId == query.CustomerId.Value);
+            }
+
+            // Filter by userId if provided
+            if (query.UserId.HasValue)
+            {
+                invoices = invoices.Where(i => i.UserId == query.UserId.Value);
+            }
+
+            // SearchTerm: search by invoice number, customer name, or user name
+            if (!string.IsNullOrWhiteSpace(query.SearchTerm))
+            {
+                var term = query.SearchTerm.ToLower();
+                invoices = invoices.Where(i =>
+                i.InvoiceNumber.ToLower().Contains(term) ||
+                    (i.Customer != null && i.Customer.Name.ToLower().Contains(term)) ||
+                    (i.User != null && i.User.Fullname.ToLower().Contains(term))
+                );
+            }
+
+            // Sorting
+            invoices = query.SortBy?.ToLower() switch
+            {
+                "date" => query.IsDescending ? invoices.OrderByDescending(q => q.Date) : invoices.OrderBy(q => q.Date),
+                "totalamount" => query.IsDescending ? invoices.OrderByDescending(q => q.TotalAmount) : invoices.OrderBy(q => q.TotalAmount),
+                "quotationnumber" => query.IsDescending ? invoices.OrderByDescending(q => q.InvoiceNumber) : invoices.OrderBy(q => q.InvoiceNumber),
+                "customer" => query.IsDescending ? invoices.OrderByDescending(q => q.Customer!.Name ?? "") : invoices.OrderBy(q => q.Customer!.Name ?? ""),
+                "user" => query.IsDescending ? invoices.OrderByDescending(q => q.User!.Fullname ?? "") : invoices.OrderBy(q => q.User!.Fullname ?? ""),
+                _ => invoices.OrderByDescending(q => q.Date)
+            };
+
+            var skipNumber = (query.PageNumber - 1) * query.PageSize;
+
+            return await invoices.Skip(skipNumber).Take(query.PageSize).ToListAsync();
         }
     }
 }

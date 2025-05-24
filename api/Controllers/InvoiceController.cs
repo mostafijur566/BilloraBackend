@@ -4,10 +4,12 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using api.Dto.Invoice;
+using api.Helper;
 using api.Interface;
 using api.Mappers;
 using api.Models;
 using api.Response;
+using api.Responses;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -20,7 +22,7 @@ namespace api.Controllers
         private readonly IInvoiceRepository _invoiceRepo;
         public InvoiceController(IInvoiceRepository invoiceRepo)
         {
-            _invoiceRepo = invoiceRepo;    
+            _invoiceRepo = invoiceRepo;
         }
 
         [HttpPost]
@@ -43,6 +45,29 @@ namespace api.Controllers
 
             var savedInvoice = await _invoiceRepo.CreateInvoiceWithItemsAsync(invoiceModel, invoiceDto.Items);
             return Ok(savedInvoice.ToInvoiceDto());
+        }
+
+        [HttpGet]
+        [Authorize]
+        public async Task<IActionResult> GetAllInvoice([FromQuery] InvoiceQueryObject query)
+        {
+            // Extract companyId from the JWT claims
+            var companyIdClaim = User.FindFirst("companyId")?.Value;
+            if (string.IsNullOrEmpty(companyIdClaim) || !int.TryParse(companyIdClaim, out int companyId))
+            {
+                return Unauthorized(new ErrorResponse(401, "Invalid token or missing company info"));
+            }
+
+            var invoices = await _invoiceRepo.GetAllInvoiceAsync(companyId, query);
+
+            if (invoices == null)
+            {
+                return NotFound(new ErrorResponse(404, "Not found."));
+            }
+
+            var response = new PagedResponse<InvoiceDto>(invoices.Select(i => i.ToInvoiceDto()).ToList(), query.PageNumber, query.PageSize);
+
+            return Ok(response);
         }
     }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using api.Dto.Invoice;
+using api.Helper;
 using api.Models;
 
 namespace api.Interface
@@ -11,5 +12,6 @@ namespace api.Interface
     {
         Task<String> GenerateInvoiceNumberAsync();
         Task<Invoice> CreateInvoiceWithItemsAsync(Invoice invoiceModel, List<CreateInvoiceItemDto> itemDtos);
+        Task<List<Invoice>?> GetAllInvoiceAsync(int companyId, InvoiceQueryObject query);
     }
 }
