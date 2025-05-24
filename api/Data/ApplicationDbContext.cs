@@ -20,6 +20,8 @@ namespace api.Data
         public DbSet<Product> Products { get; set; }
         public DbSet<Quotation> Quotations { get; set; }
         public DbSet<QuotationItem> QuotationItems { get; set; }
+        public DbSet<Invoice> Invoices { get; set; }
+        public DbSet<InvoiceItem> InvoiceItems { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -79,7 +81,33 @@ namespace api.Data
                 .HasOne(q => q.Product)
                 .WithMany()
                 .HasForeignKey(q => q.ProductId)
-                .OnDelete(DeleteBehavior.Restrict); // or .NoAction to prevent cascade delete
+                .OnDelete(DeleteBehavior.Restrict); 
+
+
+            // Invoice
+            modelBuilder.Entity<Invoice>()
+                .HasOne(i => i.User)
+                .WithMany(u => u.Invoices)
+                .HasForeignKey(i => i.UserId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Invoice>()
+                .HasOne(q => q.Customer)
+                .WithMany(c => c.Invoices)
+                .HasForeignKey(q => q.CustomerId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<InvoiceItem>()
+                .HasOne(q => q.Invoice)
+                .WithMany(c => c.InvoiceItems)
+                .HasForeignKey(q => q.InvoiceId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<InvoiceItem>()
+                .HasOne(q => q.Product)
+                .WithMany()
+                .HasForeignKey(q => q.ProductId)
+                .OnDelete(DeleteBehavior.Restrict);
 
 
             // // Decimal Precision

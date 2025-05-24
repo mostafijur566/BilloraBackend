@@ -19,16 +19,6 @@ namespace api.Repository
         {
             _context = context;
         }
-        public async Task<Quotation> CreateQuotationAsync(Quotation quotation)
-        {
-            quotation.QuotationNumber = await GenerateQuotationNumberAsync();
-            quotation.CreatedAt = DateTime.UtcNow;
-            quotation.UpdatedAt = DateTime.UtcNow;
-
-            _context.Quotations.Add(quotation);
-            await _context.SaveChangesAsync();
-            return quotation;
-        }
 
         public async Task<string> GenerateQuotationNumberAsync()
         {

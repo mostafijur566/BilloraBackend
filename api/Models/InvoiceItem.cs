@@ -26,7 +26,7 @@ namespace api.Models
         public decimal Total { get; set; }
         // Navigation Properties
         [ForeignKey("InvoiceId")]
-        public Quotation? Quotation { get; set; }
+        public Invoice? Invoice { get; set; }
 
         [ForeignKey("ProductId")]
         public Product? Product { get; set; }

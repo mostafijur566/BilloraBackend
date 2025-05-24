@@ -22,5 +22,6 @@ namespace api.Models
         [ForeignKey("UserId")]
         public User? User { get; set; }
         public ICollection<Quotation> Quotations { get; set; } = new List<Quotation>();
+        public ICollection<Invoice> Invoices { get; set; } = new List<Invoice>();
     }
 }
