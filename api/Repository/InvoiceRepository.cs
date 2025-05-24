@@ -122,5 +122,53 @@ namespace api.Repository
                     .ThenInclude(i => i.Product)
                 .FirstOrDefaultAsync(i => i.User != null && i.User.CompanyId == companyId && i.Id == invoiceId);
         }
+
+        public async Task<Invoice?> UpdateInvoiceWithItemsAsync(int invoiceId, int companyId, UpdateInvoiceDto invoiceDto)
+        {
+            var existingInvoice = await _context.Invoices
+                .Include(i => i.InvoiceItems)
+                .Include(i => i.User)
+                .FirstOrDefaultAsync(i => i.User != null &&
+                    i.User.CompanyId == companyId &&
+                    i.Id == invoiceId);
+
+            if (existingInvoice == null)
+            {
+                return null;
+            }
+
+            // Update invoice fields
+            existingInvoice.CustomerId = invoiceDto.CustomerId;
+            existingInvoice.Date = invoiceDto.Date;
+            existingInvoice.DueDate = invoiceDto.DueDate;
+            existingInvoice.TotalAmount = invoiceDto.TotalAmount;
+            existingInvoice.Status = invoiceDto.Status;
+            existingInvoice.UpdatedAt = DateTime.UtcNow;
+
+            // Remove old invoices items
+            _context.InvoiceItems.RemoveRange(existingInvoice.InvoiceItems);
+
+            // Add updated items
+            var newItems = invoiceDto.Items.Select(items => new InvoiceItem
+            {
+                InvoiceId = existingInvoice.Id,
+                ProductId = items.ProductId,
+                Quantity = items.Quantity,
+                UnitPrice = items.UnitPrice,
+                Discount = items.Discount,
+                Tax = items.Tax,
+                Total = items.Total
+            }).ToList();
+
+            // Load full updated invoice with related entites
+            var updateInvoice = await _context.Invoices
+                .Include(i => i.Customer)
+                .Include(i => i.User)
+                .Include(i => i.InvoiceItems)
+                    .ThenInclude(ii => ii.Product)
+                .FirstOrDefaultAsync(i => i.Id == invoiceId);
+
+            return updateInvoice;
+        }
     }
 }

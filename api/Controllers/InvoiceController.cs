@@ -90,5 +90,29 @@ namespace api.Controllers
 
             return Ok(invoice.ToInvoiceDto());
         }
+
+        [HttpPut("{id}")]
+        [Authorize]
+        public async Task<IActionResult> UpdateInvoice([FromRoute] int id, [FromBody] UpdateInvoiceDto invoiceDto)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            // Extract companyId from the JWT claims
+            var companyIdClaim = User.FindFirst("companyId")?.Value;
+            if (string.IsNullOrEmpty(companyIdClaim) || !int.TryParse(companyIdClaim, out int companyId))
+            {
+                return Unauthorized(new ErrorResponse(401, "Invalid token or missing company info"));
+            }
+
+            var updateInvoice = await _invoiceRepo.UpdateInvoiceWithItemsAsync(id, companyId, invoiceDto);
+
+            if (updateInvoice == null)
+            {
+                return NotFound(new ErrorResponse(404, "Invoice not found"));
+            }
+
+            return Ok(updateInvoice.ToInvoiceDto());
+        }
     }
 }

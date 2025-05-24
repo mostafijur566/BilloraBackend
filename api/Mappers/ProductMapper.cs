@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using api.Dto.Invoice;
 using api.Dto.Product;
 using api.Models;
 
@@ -39,6 +40,20 @@ namespace api.Mappers
                 MinimumSellingPrice = createProductDto.MinimumSellingPrice,
                 Unit = createProductDto.Unit,
                 TaxRate = createProductDto.TaxRate
+            };
+        }
+
+        public static Invoice ToInvoiceFromUpdate(this UpdateInvoiceDto invoiceDto, int userId)
+        {
+            return new Invoice
+            {
+                CustomerId = invoiceDto.CustomerId,
+                UserId = userId,
+                Date = invoiceDto.Date,
+                DueDate = invoiceDto.DueDate,
+                TotalAmount = invoiceDto.TotalAmount,
+                Status = invoiceDto.Status,
+                UpdatedAt = DateTime.UtcNow
             };
         }
 
