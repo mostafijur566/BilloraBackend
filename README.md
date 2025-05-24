@@ -34,13 +34,17 @@
 BilloraBackend/Api/
 │
 ├── Controllers/ # API endpoints
+├── Data/ # DbContext and seeding
+├── Dto/ # Data Transfer Objects
+├── Helper/ # Utility classes and QueryObjects
+├── Interfaces/ # Service and repository contracts
+├── Mappers/ # Manual mapping logic
+├── Migrations/ # EF Core migrations
 ├── Models/ # Entity models (EF Core)
-├── DTOs/ # Data Transfer Objects
 ├── Services/ # Business logic
 ├── Repositories/ # Data access layer
-├── Migrations/ # EF Core migrations
-├── Program.cs # Entry point
-└── appsettings.json # Configuration
+├── appsettings.json # Configuration
+└── Program.cs # Entry point
 ```
 ---
 
