@@ -47,6 +47,27 @@ namespace api.Repository
             return result!;
         }
 
+        public async Task<Invoice?> DeleteInvoiceAsync(int invoiceId, int companyId)
+        {
+            var invoice = await _context.Invoices
+                .Include(i => i.InvoiceItems)
+                .FirstOrDefaultAsync(i => i.Id == invoiceId &&
+                    i.User != null &&
+                    i.User.CompanyId == companyId);
+
+            if (invoice == null)
+            {
+                return null;
+            }
+
+            // Manually remove related items if cascade delete is not used
+            _context.InvoiceItems.RemoveRange(invoice.InvoiceItems);
+            _context.Invoices.Remove(invoice);
+
+            await _context.SaveChangesAsync();
+            return invoice;
+        }
+
         public async Task<string> GenerateInvoiceNumberAsync()
         {
             var currentYear = DateTime.UtcNow.Year;

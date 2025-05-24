@@ -114,5 +114,26 @@ namespace api.Controllers
 
             return Ok(updateInvoice.ToInvoiceDto());
         }
+
+        [HttpDelete("{id}")]
+        [Authorize]
+        public async Task<IActionResult> DeleteQuostation([FromRoute] int id)
+        {
+            // Extract companyId from the JWT claims
+            var companyIdClaim = User.FindFirst("companyId")?.Value;
+            if (string.IsNullOrEmpty(companyIdClaim) || !int.TryParse(companyIdClaim, out int companyId))
+            {
+                return Unauthorized(new ErrorResponse(401, "Invalid token or missing company info"));
+            }
+
+            var invoice = await _invoiceRepo.DeleteInvoiceAsync(id, companyId);
+
+            if (invoice == null)
+            {
+                return NotFound(new ErrorResponse(404, "Invoice not found"));
+            }
+
+            return NoContent();
+        }
     }
 }

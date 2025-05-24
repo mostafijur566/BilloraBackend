@@ -15,5 +15,6 @@ namespace api.Interface
         Task<List<Invoice>?> GetAllInvoiceAsync(int companyId, InvoiceQueryObject query);
         Task<Invoice?> GetInvoiceByIdAsync(int invoiceId, int companyId);
         Task<Invoice?> UpdateInvoiceWithItemsAsync(int invoiceId, int companyId, UpdateInvoiceDto invoiceDto);
+        Task<Invoice?> DeleteInvoiceAsync(int invoiceId, int companyId);
     }
 }
