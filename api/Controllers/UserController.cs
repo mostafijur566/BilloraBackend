@@ -4,9 +4,11 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using api.Dto.User;
+using api.Helper;
 using api.Interface;
 using api.Mappers;
 using api.Response;
+using api.Responses;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -50,7 +52,7 @@ namespace api.Controllers
 
         [HttpGet("all")]
         [Authorize]
-        public async Task<IActionResult> GetAllUser()
+        public async Task<IActionResult> GetAllUser([FromQuery] UserQueryObject query)
         {
             var companyIdClaim = User.FindFirst("companyId")?.Value;
 
@@ -66,14 +68,16 @@ namespace api.Controllers
                 return Unauthorized(new { message = "Invalid token" });
             }
 
-            var users = await _userRepo.GetAllUserAsync(companyId, userId);
+            var users = await _userRepo.GetAllUserAsync(companyId, userId, query);
 
             if (users == null)
             {
                 return NotFound(new { message = "User not found" });
             }
 
-            return Ok(new { users = users.Select(u => u.ToUserDto()).ToList() });
+            var response = new PagedResponse<UserDto>(users.Select(u => u.ToUserDto()).ToList(), query.PageNumber, query.PageSize);
+
+            return Ok(response);
         }
 
         [HttpPut]

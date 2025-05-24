@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using api.Data;
+using api.Helper;
 using api.Interface;
 using api.Models;
 using Microsoft.EntityFrameworkCore;
@@ -74,9 +75,52 @@ namespace api.Repository
             };
         }
 
-        public async Task<List<User>?> GetAllUserAsync(int companyId, int userId)
+        public async Task<List<User>?> GetAllUserAsync(int companyId, int userId, UserQueryObject query)
         {
-            return await _context.Users.Where(u => u.CompanyId == companyId && u.Id != userId).ToListAsync();
+            var users = _context.Users
+                .Where(u => u.CompanyId == companyId &&
+                    u.Id != userId).AsQueryable();
+
+            if (!string.IsNullOrWhiteSpace(query.Username))
+                users = users.Where(u => u.Username.Contains(query.Username));
+
+            if (!string.IsNullOrWhiteSpace(query.Email))
+                users = users.Where(u => u.Email.Contains(query.Email));
+
+            if (!string.IsNullOrWhiteSpace(query.Fullname))
+                users = users.Where(u => u.Fullname.Contains(query.Fullname));
+
+            if (!string.IsNullOrWhiteSpace(query.Role))
+                users = users.Where(u => u.Role.ToLower() == query.Role.ToLower());
+
+            if (query.IsActive.HasValue)
+                users = users.Where(u => u.IsActive == query.IsActive.Value);
+
+            if (!string.IsNullOrWhiteSpace(query.SortBy))
+            {
+                switch (query.SortBy.ToLower())
+                {
+                    case "username":
+                        users = query.IsDescending ? users.OrderByDescending(u => u.Username) : users.OrderBy(u => u.Username);
+                        break;
+                    case "email":
+                        users = query.IsDescending ? users.OrderByDescending(u => u.Email) : users.OrderBy(u => u.Email);
+                        break;
+                    case "fullname":
+                        users = query.IsDescending ? users.OrderByDescending(u => u.Fullname) : users.OrderBy(u => u.Fullname);
+                        break;
+                    case "createdat":
+                        users = query.IsDescending ? users.OrderByDescending(u => u.CreatedAt) : users.OrderBy(u => u.CreatedAt);
+                        break;
+                    default:
+                        users = users.OrderBy(u => u.Username);
+                        break;
+                }
+            }
+
+            var skipNumber = (query.PageNumber - 1) * query.PageSize;
+
+            return await users.Skip(skipNumber).Take(query.PageSize).ToListAsync();
         }
 
         public Task<User?> GetUserAsync(int id)
