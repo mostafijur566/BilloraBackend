@@ -122,5 +122,26 @@ namespace api.Controllers
 
             return Ok(updatedQuotation.ToQuotationDto());
         }
+
+        [HttpDelete("{id}")]
+        [Authorize]
+        public async Task<IActionResult> DeleteQuotation([FromRoute] int id)
+        {
+            // Extract companyId from the JWT claims
+            var companyIdClaim = User.FindFirst("companyId")?.Value;
+            if (string.IsNullOrEmpty(companyIdClaim) || !int.TryParse(companyIdClaim, out int companyId))
+            {
+                return Unauthorized(new ErrorResponse(401, "Invalid token or missing company info"));
+            }
+
+            var quotation = await _quotationRepo.DeleteQuotationAsync(id, companyId);
+
+            if (quotation == null)
+            {
+                return NotFound(new ErrorResponse(404, "Quotation not found"));
+            }
+
+            return NoContent();
+        }
     }
 }

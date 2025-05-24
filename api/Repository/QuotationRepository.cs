@@ -185,5 +185,26 @@ namespace api.Repository
                    .ThenInclude(i => i.Product)
                .FirstOrDefaultAsync(q => q.User != null && q.User.CompanyId == companyId && q.Id == quotationId);
         }
+
+        public async Task<Quotation?> DeleteQuotationAsync(int quotationId, int companyId)
+        {
+            var quotation = await _context.Quotations
+                .Include(q => q.QuotationItems)
+                .FirstOrDefaultAsync(q => q.Id == quotationId &&
+                    q.User != null &&
+                    q.User.CompanyId == companyId);
+
+            if (quotation == null)
+            {
+                return null;
+            }
+
+            // Manually remove releated items if cascade delete is not used
+            _context.QuotationItems.RemoveRange(quotation.QuotationItems);
+            _context.Quotations.Remove(quotation);
+
+            await _context.SaveChangesAsync();
+            return quotation;
+        }
     }
 }
