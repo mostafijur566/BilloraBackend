@@ -125,5 +125,15 @@ namespace api.Repository
 
             return await quotations.Skip(skipNumber).Take(query.PageSize).ToListAsync();
         }
+
+        public async Task<Quotation?> GetQuotationByIdAsync(int quotationId, int companyId)
+        {
+            return await _context.Quotations
+               .Include(q => q.User)
+               .Include(q => q.Customer)
+               .Include(q => q.QuotationItems)
+                   .ThenInclude(i => i.Product)
+               .FirstOrDefaultAsync(q => q.User != null && q.User.CompanyId == companyId && q.Id == quotationId);
+        }
     }
 }

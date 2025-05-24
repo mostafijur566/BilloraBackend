@@ -13,7 +13,7 @@ namespace api.Interface
         Task<String> GenerateQuotationNumberAsync();
         Task<Quotation> CreateQuotationAsync(Quotation quotation);
         Task<Quotation> CreateQuotationWithItemsAsync(Quotation quotationModel, List<CreateQuotationItemDto> itemDtos);
-
-        Task<List<Quotation>?> GetAllQuotationAsync(int companyId,  QuotationQueryObject query);
+        Task<List<Quotation>?> GetAllQuotationAsync(int companyId, QuotationQueryObject query);
+        Task<Quotation?> GetQuotationByIdAsync(int quotationId, int companyId);
     }
 }
