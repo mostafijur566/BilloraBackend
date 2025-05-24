@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using api.Data;
+using api.Helper;
 using api.Interface;
 using api.Models;
 using Microsoft.EntityFrameworkCore;
@@ -38,12 +39,54 @@ namespace api.Repository
             return customer;
         }
 
-        public async Task<List<Customer>?> GetAllCustomerAsync(int companyId)
+        public async Task<List<Customer>?> GetAllCustomerAsync(int companyId, CustomerQueryObject query)
         {
-            return await _context.Customers
+            var customers = _context.Customers
                 .Include(c => c.User)
                 .Where(c => c.User != null && c.User.CompanyId == companyId)
-                .ToListAsync();
+                .AsQueryable();
+
+            // Filter by name if provided
+            if (!string.IsNullOrWhiteSpace(query.Name))
+            {
+                customers = customers.Where(c => c.Name.Contains(query.Name));
+            }
+
+            // Filter by email if provided
+            if (!string.IsNullOrWhiteSpace(query.Email))
+            {
+                customers = customers.Where(c => c.Email != null && c.Email.Contains(query.Email));
+            }
+
+            // Filter by phone if provided
+            if (!string.IsNullOrWhiteSpace(query.Phone))
+            {
+                customers = customers.Where(c => c.Phone.Contains(query.Phone));
+            }
+
+            // Filter by user id if provided
+            if (query.UserId.HasValue)
+            {
+                customers = customers.Where(c => c.UserId == query.UserId);
+            }
+
+            // Filter by SortBy if provided
+            if (!string.IsNullOrWhiteSpace(query.SortBy))
+            {
+                switch (query.SortBy.ToLower())
+                {
+                    case "name":
+                        customers = query.IsDescending ? customers.OrderByDescending(c => c.Name) : customers.OrderBy(c => c.Name);
+                        break;
+                    case "email":
+                        customers = query.IsDescending ? customers.OrderByDescending(c => c.Email) : customers.OrderBy(c => c.Email);
+                        break;
+                }
+            }
+
+            var skipNumber = (query.PageNumber - 1) * query.PageSize;
+
+            return await customers.Skip(skipNumber).Take(query.PageSize).ToListAsync();
         }
 
         public async Task<Customer?> GetCustomerByIdAsync(int id)

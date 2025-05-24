@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using api.Helper;
 using api.Interface;
 using api.Mappers;
 using api.Response;
+using api.Responses;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -23,7 +25,7 @@ namespace api.Dto.Customer
 
         [HttpGet]
         [Authorize]
-        public async Task<IActionResult> GetAllCustomer()
+        public async Task<IActionResult> GetAllCustomer([FromQuery] CustomerQueryObject query)
         {
             // Extract companyId from the JWT claims
             var companyIdClaim = User.FindFirst("companyId")?.Value;
@@ -33,17 +35,16 @@ namespace api.Dto.Customer
             }
 
             // Fetch customers where their user's company ID matches
-            var customers = await _customerRepo.GetAllCustomerAsync(companyId);
+            var customers = await _customerRepo.GetAllCustomerAsync(companyId, query);
 
             if (customers == null)
             {
-                return Ok(Enumerable.Empty<CustomerDto>());
+                return NotFound(new ErrorResponse(404, "Not found."));
             }
 
-            // Optionally, map to DTOs
-            var customerDtos = customers.Select(c => c.ToCustomerDto());
+            var response = new PagedResponse<CustomerDto>(customers.Select(c => c.ToCustomerDto()).ToList(),query.PageNumber, query.PageSize);
 
-            return Ok(customerDtos);
+            return Ok(response);
         }
 
         [HttpGet("{id:int}")]
