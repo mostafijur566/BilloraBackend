@@ -4,9 +4,11 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using api.Dto.Product;
+using api.Helper;
 using api.Interface;
 using api.Mappers;
 using api.Response;
+using api.Responses;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -24,7 +26,7 @@ namespace api.Controllers
 
         [HttpGet]
         [Authorize]
-        public async Task<IActionResult> GetAllProduct()
+        public async Task<IActionResult> GetAllProduct([FromQuery] ProductQueryObject query)
         {
             // Extract companyId from the JWT claims
             var companyIdClaim = User.FindFirst("companyId")?.Value;
@@ -34,7 +36,7 @@ namespace api.Controllers
             }
 
             // Fetch products where their user's company ID matches
-            var products = await _productRepo.GetAllProductAsync(companyId);
+            var products = await _productRepo.GetAllProductAsync(companyId, query);
 
             if (products == null)
             {
@@ -44,7 +46,9 @@ namespace api.Controllers
             // Optionally, map to DTOs
             var productDtos = products.Select(c => c.ToProductDto());
 
-            return Ok(productDtos);
+            var response = new PagedResponse<ProductDto>(products.Select(c => c.ToProductDto()).ToList(), query.PageNumber, query.PageSize);
+
+            return Ok(response);
         }
 
         [HttpGet("{id:int}")]
