@@ -46,6 +46,11 @@ namespace api.Repository
             return await _context.Users.FirstOrDefaultAsync(u => u.Email == email);
         }
 
+        public async Task<User?> GetUserByIdAsync(int id)
+        {
+            return await _context.Users.SingleOrDefaultAsync(u => u.Id == id);
+        }
+
         public async Task<User?> GetUserByUsernameAsync(string username)
         {
             return await _context.Users.FirstOrDefaultAsync(u => u.Username == username);
@@ -64,9 +69,17 @@ namespace api.Repository
 
             user.PasswordResetOtp = null;
             user.OtpExpiresAt = null;
+            user.UpdatedAt = DateTime.UtcNow;
 
             await _context.SaveChangesAsync();
 
+            return user;
+        }
+
+        public async Task<User> UpdateUserAsyc(User user)
+        {
+            _context.Users.Update(user);
+            await _context.SaveChangesAsync();
             return user;
         }
     }

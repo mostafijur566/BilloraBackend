@@ -9,12 +9,7 @@ namespace api.Dto.Account
     public class ResetPasswordRequestDto
     {
         [Required]
-        [EmailAddress]
-        public string Email { get; set; } = string.Empty;
-
-        [Required]
-        [StringLength(6, MinimumLength = 6, ErrorMessage = "OTP must be 6 digits.")]
-        public string Otp { get; set; } = string.Empty;
+        public string ResetToken { get; set; } = string.Empty;
 
         [Required]
         [MinLength(6, ErrorMessage = "Password should be at least 6 characters.")]

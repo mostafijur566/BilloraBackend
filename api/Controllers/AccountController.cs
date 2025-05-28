@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 using api.Dto.Account;
 using api.Data;
 using Hangfire;
+using System.Security.Claims;
 
 namespace api.Controllers
 {
@@ -169,19 +170,55 @@ namespace api.Controllers
             });
         }
 
-        [HttpPost("reset-password")]
-        public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordRequestDto request)
+        [HttpPost("verify-otp")]
+        public async Task<IActionResult> VerifyOtp([FromBody] VerifyOtpRequestDto request)
         {
             var user = await _accountRepository.GetUserByEmailAsync(request.Email);
+
             if (user == null)
                 return NotFound(new ErrorResponse(404, "Email not found."));
 
             if (user.PasswordResetOtp != request.Otp || user.OtpExpiresAt < DateTime.UtcNow)
-                return BadRequest(new ErrorResponse(400, "Invalid or expired OTP."));
+                return BadRequest(new ErrorResponse(400, "Invalid or expired OTP"));
 
-            var updatedUser = await _accountRepository.ResetPasswordAsync(user, request.NewPassword);
+            // Clear the OTP after successful verification
+            user.PasswordResetOtp = null;
+            user.OtpExpiresAt = null;
+            await _accountRepository.UpdateUserAsyc(user);
 
-            if (updatedUser == null)
+            // Generate JWT token
+            var token = _jwtService.GeneratePasswordResetToken(user);
+
+            return Ok(new
+            {
+                resetToken = token,
+                message = "OTP verified successfully. You can now reset your password"
+            });
+        }
+
+        [HttpPost("reset-password")]
+        public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordRequestDto request)
+        {
+            // Validate the reset token
+            var principal = _jwtService.ValidatePasswordResetToken(request.ResetToken);
+            if (principal == null)
+                return BadRequest(new ErrorResponse(400, "Invalid or expired reset token."));
+
+            // Get user ID from token
+            var userIdClaim = principal.FindFirst(ClaimTypes.NameIdentifier);
+            if (userIdClaim == null || !int.TryParse(userIdClaim.Value, out var userId))
+                return BadRequest(new ErrorResponse(400, "Invalid token."));
+
+            // Get user from database
+            var user = await _accountRepository.GetUserByIdAsync(userId);
+
+            if (user == null)
+                return NotFound(new ErrorResponse(404, "User not found."));
+
+            // Reset password
+            var passwordResetSuccess = await _accountRepository.ResetPasswordAsync(user, request.NewPassword);
+
+            if (passwordResetSuccess == null)
                 return StatusCode(500, new ErrorResponse(500, "Failed to reset password."));
 
             return Ok(new

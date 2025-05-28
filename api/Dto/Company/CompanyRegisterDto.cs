@@ -47,10 +47,6 @@ namespace api.Dto
         [EmailAddress]
         public string UserEmail { get; set; } = string.Empty;
 
-        [Required]
-        [MaxLength(20)]
-        public string Role { get; set; } = "Owner";
-
         [Phone]
         public string PhoneNumber { get; set; } = string.Empty;
 

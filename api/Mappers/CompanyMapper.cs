@@ -29,7 +29,7 @@ namespace api.Mappers
                 Username = dto.Username,
                 Email = dto.UserEmail,
                 Fullname = dto.Fullname,
-                Role = string.IsNullOrEmpty(dto.Role) ? "Owner" : dto.Role,
+                Role = "Owner",
                 Phone = dto.PhoneNumber,
                 PasswordHash = BCrypt.Net.BCrypt.HashPassword(dto.Password),
                 IsActive = true,
